@@ -20,7 +20,11 @@ logger = setup_logger(str(LOG_FILE), "grok_classifier")
 annotations = load_definitions(str(ANNOTATION_GLOB))
 twitter_df = pd.read_csv(str(CSV_PATH), encoding="cp1252", low_memory=False)
 
-# Clean the text data
+# Log dataset info
+logger.info("Loaded CSV: path=%s shape=%s columns=%s",
+            CSV_PATH, twitter_df.shape, list(twitter_df.columns))
+
+# Clean the text data 
 twitter_df['Text'] = twitter_df['Text'].apply(
     lambda x: re.sub(r'@\w+', '', str(x)) if pd.notna(x) else x
 )
@@ -28,11 +32,6 @@ twitter_df['Text'] = twitter_df['Text'].str.strip()
 twitter_df['text_length'] = twitter_df['Text'].apply(
     lambda x: len(str(x)) if pd.notna(x) else 0
 )
-
-# Log dataset info
-logger.info("Loaded CSV: path=%s shape=%s columns=%s",
-            CSV_PATH, twitter_df.shape, list(twitter_df.columns))
-
 
 samples = twitter_df[twitter_df["Text"].notna()].copy()
 samples = samples[(samples["Biased"] == 1) & (samples["text_length"]>MIN_CHARS)].sample(N_SAMPLES, random_state=42)
@@ -90,18 +89,7 @@ for idx, row in samples.iterrows():
 
     prediction, desc = extract_pred_and_desc(resp_text, annotations)
 
-    log_row_preview = {
-        "text": truncate_text(text, 160),
-        "keyword": keyword,
-        "prediction": prediction,
-        "description": truncate_text(desc, 200),
-        "model": MODEL,
-        "max_tokens": MAX_TOKENS,
-        "temperature": TEMPERATURE,
-    }
-    logger.info("Result row: %s", log_row_preview)
-
-    results_rows.append({
+    tmp_res = {
         "original_index": idx,
         "text": text,
         "keyword": keyword,
@@ -110,7 +98,10 @@ for idx, row in samples.iterrows():
         "model": MODEL,
         "max_tokens": MAX_TOKENS,
         "temperature": TEMPERATURE,
-    })
+    }
+    logger.info("Result row: %s", tmp_res)
+
+    results_rows.append(tmp_res)
 
 # Build results DataFrame
 results_df = pd.DataFrame(

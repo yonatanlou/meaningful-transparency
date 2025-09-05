@@ -47,5 +47,5 @@ Output schema:
 Rules:
 - answer MUST be exactly one of annotations keys: IHRA Definition, Jerusalem Declaration
 - description must cite concrete cues from the text
-- Dont say if this text is antisemitic or not, just pick the best fitting definition!
+- Dont say if this text is antisemitic or not, just pick the best fitting definition
 """
