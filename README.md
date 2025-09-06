@@ -15,7 +15,12 @@ A tool for classifying Twitter posts against different antisemitism definitions 
 
 3. **Run classification:**
    ```bash
-   cd src && python classify_twitter_posts.py
+   uv run python src/classify_twitter_posts.py
+   ```
+   
+   Or with custom parameters:
+   ```bash
+   uv run python src/classify_twitter_posts.py --model openai/gpt-4o --temperature 0.2 --n-samples 10 --min-chars 50 --results_filename twitter_posts_classified
    ```
 
 ## What it does
@@ -33,10 +38,11 @@ The script uses structured prompts to get JSON responses and logs all activities
 
 ## Configuration
 
-Key settings in `src/constants.py`:
-- `N_SAMPLES`: Number of posts to classify (default: 2)
-- `MIN_CHARS`: Minimum text length (default: 100)
-- `MODEL`: LLM model to use (default: openai/gpt-4o-mini)
+You can configure the script via CLI arguments or by editing `src/constants.py`:
+- `--model`: LLM model to use (default: openai/gpt-4o-mini)
+- `--temperature`: Temperature for LLM (default: 0.1)
+- `--n-samples`: Number of posts to classify (default: 2)
+- `--min-chars`: Minimum text length (default: 100)
 
 ## Output Format
 

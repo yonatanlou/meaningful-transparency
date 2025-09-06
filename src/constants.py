@@ -30,11 +30,14 @@ MIN_CHARS = 100
 CLASSIFIER_SYSTEM = """You are a careful text classifier.
 
 You will be given:
-- a JSON object named "annotations" mapping names to definitions
+- a JSON object named "annotations" mapping names to definitions (IHRA Definition, Jerusalem Declaration)
 - a "text" string to classify
-
+The definitions are different definitions of antisemitism.
+The Jerusalem Declaration is a subclass of the IHRA Definition.
 Task:
-- Pick exactly one key from annotations as the best match for text.
+- You should pick the definition that best fits the text.
+- The optional labels are: "IHRA Definition", "Jerusalem Declaration + IHRA Definition", "None" (not antisemitic). 
+- Pick exactly one label.
 - If several could fit, choose the stricter or more specific one.
 - Output JSON only, no extra words.
 
@@ -45,7 +48,6 @@ Output schema:
 }
 
 Rules:
-- answer MUST be exactly one of annotations keys: IHRA Definition, Jerusalem Declaration
+- answer MUST be exactly one of optional labels: "IHRA Definition", "Jerusalem Declaration + IHRA Definition", "None".
 - description must cite concrete cues from the text
-- Dont say if this text is antisemitic or not, just pick the best fitting definition
 """

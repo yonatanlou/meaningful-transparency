@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+import argparse
 from dotenv import load_dotenv
 from datetime import datetime
 from constants import (
@@ -11,104 +12,139 @@ from utils import (
     generate_prompt, extract_pred_and_desc, get_answer, llm
 )
 
-load_dotenv()
+def parse_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(description="Classify Twitter posts against antisemitism definitions")
+    parser.add_argument("--model", default=MODEL, 
+                       help=f"LLM model to use (default: {MODEL})")
+    parser.add_argument("--temperature", type=float, default=TEMPERATURE,
+                       help=f"Temperature for LLM (default: {TEMPERATURE})")
+    parser.add_argument("--n-samples", type=int, default=N_SAMPLES,
+                       help=f"Number of samples to classify (default: {N_SAMPLES})")
+    parser.add_argument("--min-chars", type=int, default=MIN_CHARS,
+                       help=f"Minimum character length for posts (default: {MIN_CHARS})")
+    parser.add_argument("--results-filname", type=str, default="twitter_posts_classified",
+                       help="Base filename for results CSV (default: twitter_posts_classified)")
+    return parser.parse_args()
 
-# Setup logging
-logger = setup_logger(str(LOG_FILE), "grok_classifier")
+def main():
+    load_dotenv()
+    args = parse_args()
+    
+    # Use CLI args or defaults
+    model = args.model
+    temperature = args.temperature
+    n_samples = args.n_samples
+    min_chars = args.min_chars
+    results_filename = args.results_filname
+    
+    # Setup logging
+    logger = setup_logger(str(LOG_FILE), "grok_classifier")
+    
+    # Load definitions and data
+    annotations = load_definitions(str(ANNOTATION_GLOB))
+    twitter_df = pd.read_csv(str(CSV_PATH), encoding="cp1252", low_memory=False)
 
-# Load definitions and data
-annotations = load_definitions(str(ANNOTATION_GLOB))
-twitter_df = pd.read_csv(str(CSV_PATH), encoding="cp1252", low_memory=False)
+    # Log dataset info
+    logger.info("Loaded CSV: path=%s shape=%s columns=%s",
+                CSV_PATH, twitter_df.shape, list(twitter_df.columns))
 
-# Log dataset info
-logger.info("Loaded CSV: path=%s shape=%s columns=%s",
-            CSV_PATH, twitter_df.shape, list(twitter_df.columns))
+    # Clean the text data 
+    twitter_df['Text'] = twitter_df['Text'].apply(
+        lambda x: re.sub(r'@\w+', '', str(x)) if pd.notna(x) else x
+    )
+    twitter_df['Text'] = twitter_df['Text'].str.strip()
+    twitter_df['text_length'] = twitter_df['Text'].apply(
+        lambda x: len(str(x)) if pd.notna(x) else 0
+    )
 
-# Clean the text data 
-twitter_df['Text'] = twitter_df['Text'].apply(
-    lambda x: re.sub(r'@\w+', '', str(x)) if pd.notna(x) else x
-)
-twitter_df['Text'] = twitter_df['Text'].str.strip()
-twitter_df['text_length'] = twitter_df['Text'].apply(
-    lambda x: len(str(x)) if pd.notna(x) else 0
-)
+    samples = twitter_df[twitter_df["Text"].notna()].copy()
+    samples = samples[(samples["text_length"]>min_chars)]
+    samples = samples.groupby("Biased", group_keys=False).apply(lambda x: x.sample(min(len(x), n_samples // samples["Biased"].nunique()), random_state=42))
+    logger.info("Sampled %s rows with Biased=1 and text_length>%s", len(samples), min_chars)
+    logger.debug("Sampled rows indices: %s", samples.index.tolist())
 
-samples = twitter_df[twitter_df["Text"].notna()].copy()
-samples = samples[(samples["Biased"] == 1) & (samples["text_length"]>MIN_CHARS)].sample(N_SAMPLES, random_state=42)
-logger.info("Sampled %s rows with Biased=1 and text_length>%s", len(samples), MIN_CHARS)
-logger.debug("Sampled rows indices: %s", samples.index.tolist())
+    # Process all samples
+    results_rows = []
+    logger.info('System prompt for all prompts %s', CLASSIFIER_SYSTEM)
 
-# Process all samples
-results_rows = []
-logger.info('System prompt for all prompts %s', CLASSIFIER_SYSTEM)
+    for idx, row in samples.iterrows():
+        # Extract fields
+        text = str(row["Text"])
+        biased = row["Biased"]
+        keyword = row["Keyword"] if "Keyword" in row and pd.notna(row["Keyword"]) else None
 
-for idx, row in samples.iterrows():
-    # Extract fields
-    text = str(row["Text"])
-    keyword = row["Keyword"] if "Keyword" in row and pd.notna(row["Keyword"]) else None
+        logger.info("Row %s: text=%s | keyword=%s",
+                    idx, truncate_text(text, 200), keyword)
 
-    logger.info("Row %s: text=%s | keyword=%s",
-                idx, truncate_text(text, 200), keyword)
+        prompt = generate_prompt(text, annotations)
+        logger.debug("Prompt (truncated): %s", truncate_text(prompt, 800))
 
-    prompt = generate_prompt(text, annotations)
-    logger.debug("Prompt (truncated): %s", truncate_text(prompt, 800))
+        try:
+            resp = llm(
+                [
+                    {"role": "system", "content": CLASSIFIER_SYSTEM},
+                    {"role": "user", "content": prompt},
+                ],
+                model,
+                response_format={"type": "json_object"},
+                temperature=temperature,
+                max_tokens=MAX_TOKENS,
+                return_json=True,
+            )
+        except Exception as e:
+            logger.exception("llm() call failed on row %s: %s", idx, e)
+            results_rows.append({
+                "original_index": idx,
+                "text": text,
+                "biased": biased,
+                "keyword": keyword,
+                "prediction": "LLM_ERROR",
+                "description": str(e),
+                "model": model,
+                "max_tokens": MAX_TOKENS,
+                "temperature": temperature,
+            })
+            continue
 
-    try:
-        resp = llm(
-            [
-                {"role": "system", "content": CLASSIFIER_SYSTEM},
-                {"role": "user", "content": prompt},
-            ],
-            MODEL,
-            response_format={"type": "json_object"},
-            temperature=TEMPERATURE,
-            max_tokens=MAX_TOKENS,
-            return_json=True,
-        )
-    except Exception as e:
-        logger.exception("llm() call failed on row %s: %s", idx, e)
-        results_rows.append({
+        try:
+            resp_text = get_answer(resp)
+        except Exception as e:
+            logger.exception("Failed extracting answer on row %s: %s", idx, e)
+            resp_text = '{"answer": "PARSING_ERROR", "description": "' + str(e) + '"}'
+
+        logger.debug("Raw model content (truncated): %s", truncate_text(resp_text, 800))
+
+        prediction, desc = extract_pred_and_desc(resp_text, annotations)
+
+        tmp_res = {
             "original_index": idx,
             "text": text,
+            "biased": biased,
             "keyword": keyword,
-            "prediction": "LLM_ERROR",
-            "description": str(e),
-            "model": MODEL,
+            "prediction": prediction,
+            "description": desc,
+            "model": model,
             "max_tokens": MAX_TOKENS,
-            "temperature": TEMPERATURE,
-        })
-        continue
+            "temperature": temperature,
+            "usage": resp.get("usage", {})
+        }
+        logger.info("Result row: %s", tmp_res)
 
-    try:
-        resp_text = get_answer(resp)
-    except Exception as e:
-        logger.exception("Failed extracting answer on row %s: %s", idx, e)
-        resp_text = '{"answer": "PARSING_ERROR", "description": "' + str(e) + '"}'
+        results_rows.append(tmp_res)
 
-    logger.debug("Raw model content (truncated): %s", truncate_text(resp_text, 800))
+    # Build results DataFrame
+    results_df = pd.DataFrame(
+        results_rows,
+        columns=["original_index", "text", "biased","keyword", "prediction", "description", "model", "max_tokens", "temperature", "usage"]
+    )
 
-    prediction, desc = extract_pred_and_desc(resp_text, annotations)
+    
+    today = datetime.now().strftime("%Y-%m-%d")
+    results_df.to_csv(f"outputs/{results_filename}_{today}.csv", index=False)
+    
+    logger.info("Finished. Results saved to outputs/twitter_posts_classified_%s.csv", today)
 
-    tmp_res = {
-        "original_index": idx,
-        "text": text,
-        "keyword": keyword,
-        "prediction": prediction,
-        "description": desc,
-        "model": MODEL,
-        "max_tokens": MAX_TOKENS,
-        "temperature": TEMPERATURE,
-    }
-    logger.info("Result row: %s", tmp_res)
 
-    results_rows.append(tmp_res)
-
-# Build results DataFrame
-results_df = pd.DataFrame(
-    results_rows,
-    columns=["original_index", "text", "keyword", "prediction", "description", "model", "max_tokens", "temperature"]
-)
-
-results_df.to_csv("twitter_posts_classified.csv", index=False, encoding="utf-8")
-today = datetime.now().strftime("%Y-%m-%d")
-results_df.to_csv(f"outputs/twitter_posts_classified_{today}.csv", index=False)
+if __name__ == "__main__":
+    main()
