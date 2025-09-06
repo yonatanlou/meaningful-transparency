@@ -39,7 +39,7 @@ def main():
     results_filename = args.results_filename
     
     # Setup logging
-    logger = setup_logger(str(LOG_FILE), "grok_classifier")
+    logger = setup_logger(str(LOG_FILE), "llm_classifier")
     
     # Load definitions and data
     annotations = load_definitions(str(ANNOTATION_GLOB))
@@ -69,16 +69,18 @@ def main():
 
     # Process all samples
     results_rows = []
+    total_samples = len(samples)
     logger.info('System prompt for all prompts %s', CLASSIFIER_SYSTEM)
+    logger.info('Starting to process %d samples', total_samples)
 
-    for idx, row in samples.iterrows():
+    for sample_num, (idx, row) in enumerate(samples.iterrows(), 1):
         # Extract fields
         text = str(row["Text"])
         biased = row["Biased"]
         keyword = row["Keyword"] if "Keyword" in row and pd.notna(row["Keyword"]) else None
 
-        logger.info("Row %s: text=%s | keyword=%s",
-                    idx, truncate_text(text, 200), keyword)
+        logger.info("Sample %d/%d (Row %s): text=%s | keyword=%s",
+                    sample_num, total_samples, idx, truncate_text(text, 200), keyword)
 
         prompt = generate_prompt(text, annotations)
         logger.debug("Prompt (truncated): %s", truncate_text(prompt, 800))
@@ -96,7 +98,7 @@ def main():
                 return_json=True,
             )
         except Exception as e:
-            logger.exception("llm() call failed on row %s: %s", idx, e)
+            logger.exception("Sample %d/%d - llm() call failed on row %s: %s", sample_num, total_samples, idx, e)
             results_rows.append({
                 "original_index": idx,
                 "text": text,
@@ -113,7 +115,7 @@ def main():
         try:
             resp_text = get_answer(resp)
         except Exception as e:
-            logger.exception("Failed extracting answer on row %s: %s", idx, e)
+            logger.exception("Sample %d/%d - Failed extracting answer on row %s: %s", sample_num, total_samples, idx, e)
             resp_text = '{"answer": "PARSING_ERROR", "description": "' + str(e) + '"}'
 
         logger.debug("Raw model content (truncated): %s", truncate_text(resp_text, 800))
@@ -132,7 +134,7 @@ def main():
             "temperature": temperature,
             "usage": resp.get("usage", {})
         }
-        logger.info("Result row: %s", tmp_res)
+        logger.info("Sample %d/%d - Result: prediction=%s", sample_num, total_samples, prediction)
 
         results_rows.append(tmp_res)
 
