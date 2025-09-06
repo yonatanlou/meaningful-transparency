@@ -1,0 +1,1 @@
+uv run jupyter nbconvert --to html notebooks/analysis.ipynb --output ../index.html
