@@ -18,13 +18,14 @@ LOG_FILE = LOGS_DIR / "llm_classifier.log"
 
 # API configuration
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-MODEL = "openai/gpt-4o-mini"
+MODEL = "anthropic/claude-sonnet-4"
 
 # LLM parameters
 TEMPERATURE = 0.1
 MAX_TOKENS = 800
 N_SAMPLES = 2
 MIN_CHARS = 100
+ANTISEMITISM_RATIO = 0.7  
 
 # System prompt for classification
 CLASSIFIER_SYSTEM = """You are a careful text classifier.

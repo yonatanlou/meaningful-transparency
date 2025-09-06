@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from constants import (
     CSV_PATH, LOG_FILE, ANNOTATION_GLOB, MODEL, 
-    TEMPERATURE, MAX_TOKENS, CLASSIFIER_SYSTEM, N_SAMPLES, MIN_CHARS
+    TEMPERATURE, MAX_TOKENS, CLASSIFIER_SYSTEM, N_SAMPLES, MIN_CHARS, ANTISEMITISM_RATIO
 )
 from utils import (
     load_definitions, setup_logger, truncate_text, 
@@ -23,7 +23,7 @@ def parse_args():
                        help=f"Number of samples to classify (default: {N_SAMPLES})")
     parser.add_argument("--min-chars", type=int, default=MIN_CHARS,
                        help=f"Minimum character length for posts (default: {MIN_CHARS})")
-    parser.add_argument("--results-filname", type=str, default="twitter_posts_classified",
+    parser.add_argument("--results_filename", type=str, default="twitter_posts_classified",
                        help="Base filename for results CSV (default: twitter_posts_classified)")
     return parser.parse_args()
 
@@ -36,7 +36,7 @@ def main():
     temperature = args.temperature
     n_samples = args.n_samples
     min_chars = args.min_chars
-    results_filename = args.results_filname
+    results_filename = args.results_filename
     
     # Setup logging
     logger = setup_logger(str(LOG_FILE), "grok_classifier")
@@ -60,7 +60,10 @@ def main():
 
     samples = twitter_df[twitter_df["Text"].notna()].copy()
     samples = samples[(samples["text_length"]>min_chars)]
-    samples = samples.groupby("Biased", group_keys=False).apply(lambda x: x.sample(min(len(x), n_samples // samples["Biased"].nunique()), random_state=42))
+    samples = pd.concat([
+    samples[samples["Biased"]==0].sample(int(n_samples*(1-ANTISEMITISM_RATIO)), random_state=42),
+    samples[samples["Biased"]==1].sample(int(n_samples*ANTISEMITISM_RATIO), random_state=42)
+])
     logger.info("Sampled %s rows with Biased=1 and text_length>%s", len(samples), min_chars)
     logger.debug("Sampled rows indices: %s", samples.index.tolist())
 
@@ -140,10 +143,10 @@ def main():
     )
 
     
-    today = datetime.now().strftime("%Y-%m-%d")
-    results_df.to_csv(f"outputs/{results_filename}_{today}.csv", index=False)
+    now = datetime.now().strftime("%Y-%m-%d-H:%H-M:%M")
+    results_df.to_csv(f"outputs/{results_filename}_{now}.csv", index=False)
     
-    logger.info("Finished. Results saved to outputs/twitter_posts_classified_%s.csv", today)
+    logger.info("Finished. Results saved to outputs/twitter_posts_classified_%s.csv", now)
 
 
 if __name__ == "__main__":
