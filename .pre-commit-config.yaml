@@ -5,3 +5,11 @@ repos:
       - id: ruff
         args: [--fix]
       - id: ruff-format
+  - repo: local
+    hooks:
+      - id: run-sh-scripts
+        name: Run sh_scripts.sh
+        entry: src/sh_scripts.sh
+        language: system
+        always_run: true
+        pass_filenames: false

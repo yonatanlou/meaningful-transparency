@@ -7521,57 +7521,29 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=001be826">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#for importing code</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
-<span class="n">module_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">'..'</span><span class="p">,</span> <span class="s1">'src'</span><span class="p">))</span>
-<span class="k">if</span> <span class="n">module_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adding </span><span class="si">{</span><span class="n">module_path</span><span class="si">}</span><span class="s2"> to sys.path"</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">module_path</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Adding /Users/yonatanlou/dev/meaningful-transparency/src to sys.path
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b75032f2-d3fd-49c5-8046-4e4127edc3a0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROJECT_ROOT</span>
 
-
-
 <span class="c1"># created by: uv run python src/classify_twitter_posts.py --model anthropic/claude-sonnet-4 --temperature 0.1 --n-samples 750 --min-chars 50 --results_filename twitter_posts_classified</span>
-<span class="n">dataset_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">PROJECT_ROOT</span><span class="si">}</span><span class="s2">/outputs/twitter_posts_classified_2025-09-06-H:19-M:31.csv"</span>
+<span class="n">dataset_path</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">PROJECT_ROOT</span><span class="si">}</span><span class="s2">/outputs/twitter_posts_classified_2025-09-06-H:19-M:31.csv"</span>
+<span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"biased"</span><span class="p">:</span> <span class="s2">"is_antisemitic"</span><span class="p">})</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">"None"</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'prediction'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">'IHRA Definition'</span><span class="p">,</span> <span class="s1">'Jerusalem Declaration + IHRA Definition'</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">"IHRA Definition"</span><span class="p">,</span> <span class="s2">"Jerusalem Declaration + IHRA Definition"</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -7584,7 +7556,7 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -7696,6 +7668,24 @@ a.anchor-link {
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=281d7838">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="Data-Config:">Data Config:<a class="anchor-link" href="#Data-Config:">¶</a></h1><ul>
+<li>model: anthropic/claude-sonnet-4</li>
+<li>temperature 0.1</li>
+<li>n-samples 750</li>
+<li>min-chars 50</li>
+<li>Antisemitism samples: 525</li>
+<li>Non-Antisemitism samples: 225</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=89dde8c6-424b-4dcd-aaf5-d9679abab7ac">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7711,7 +7701,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
@@ -7724,33 +7714,36 @@ a.anchor-link {
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Try JSON first</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">usage_str</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Try ast.literal_eval for Python dict strings</span>
             <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">usage_str</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># Try eval as last resort (if it's a Python dict)</span>
                 <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="n">usage_str</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
+
 <span class="c1"># Parse the usage column</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'usage_parsed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'usage'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">safe_parse_usage</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"usage_parsed"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"usage"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">safe_parse_usage</span><span class="p">)</span>
 
 <span class="c1"># Check how many failed to parse</span>
-<span class="n">failed_count</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'usage_parsed'</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">failed_count</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"usage_parsed"</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Failed to parse: </span><span class="si">{</span><span class="n">failed_count</span><span class="si">}</span><span class="s2"> rows out of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Extract token counts (handle None values)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'prompt_tokens'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'usage_parsed'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">'prompt_tokens'</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'completion_tokens'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'usage_parsed'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">'completion_tokens'</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'usage_parsed'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"prompt_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"usage_parsed"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">"prompt_tokens"</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"completion_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"usage_parsed"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">"completion_tokens"</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"total_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"usage_parsed"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">"total_tokens"</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Calculate totals</span>
-<span class="n">total_prompt_tokens</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'prompt_tokens'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">total_completion_tokens</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'completion_tokens'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">total_tokens</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">total_prompt_tokens</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"prompt_tokens"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">total_completion_tokens</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"completion_tokens"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">total_tokens</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"total_tokens"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 <span class="c1"># Claude Sonnet 4 pricing: $3/M input, $15/M output</span>
 <span class="n">input_cost</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_prompt_tokens</span> <span class="o">/</span> <span class="mi">1_000_000</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span>
@@ -7760,16 +7753,16 @@ a.anchor-link {
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Prompt Tokens: </span><span class="si">{</span><span class="n">total_prompt_tokens</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Completion Tokens: </span><span class="si">{</span><span class="n">total_completion_tokens</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Tokens: </span><span class="si">{</span><span class="n">total_tokens</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Cost Breakdown:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Cost Breakdown:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input Cost: $</span><span class="si">{</span><span class="n">input_cost</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output Cost: $</span><span class="si">{</span><span class="n">output_cost</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Cost: $</span><span class="si">{</span><span class="n">total_cost</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Also show per-row statistics</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Per-row averages:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Avg prompt tokens: </span><span class="si">{</span><span class="n">total_prompt_tokens</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Avg completion tokens: </span><span class="si">{</span><span class="n">total_completion_tokens</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Avg cost per row: $</span><span class="si">{</span><span class="n">total_cost</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Per-row averages:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Avg prompt tokens: </span><span class="si">{</span><span class="n">total_prompt_tokens</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Avg completion tokens: </span><span class="si">{</span><span class="n">total_completion_tokens</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Avg cost per row: $</span><span class="si">{</span><span class="n">total_cost</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7853,44 +7846,46 @@ Name: count, dtype: int64</pre>
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
 
 <span class="c1"># Clean and prepare text data</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="c1"># Convert to lowercase, remove URLs, mentions, and special characters</span>
     <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'http\S+|www\S+|https\S+'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove URLs</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'@\w+'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove mentions</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'[^\w\s]'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove punctuation</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\s+'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove extra spaces</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"http\S+|www\S+|https\S+"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove URLs</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"@\w+"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove mentions</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\w\s]"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove punctuation</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\s+"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove extra spaces</span>
     <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
+
 <span class="c1"># Clean all text</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'text_clean'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">clean_text</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"text_clean"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">clean_text</span><span class="p">)</span>
 
 <span class="c1"># Get most frequent words (unigrams)</span>
 <span class="n">vectorizer_unigrams</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span>
-    <span class="n">stop_words</span><span class="o">=</span><span class="s1">'english'</span><span class="p">,</span>
-    <span class="n">max_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-    <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">stop_words</span><span class="o">=</span><span class="s2">"english"</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">unigram_matrix</span> <span class="o">=</span> <span class="n">vectorizer_unigrams</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'text_clean'</span><span class="p">])</span>
+<span class="n">unigram_matrix</span> <span class="o">=</span> <span class="n">vectorizer_unigrams</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"text_clean"</span><span class="p">])</span>
 <span class="n">unigram_counts</span> <span class="o">=</span> <span class="n">unigram_matrix</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">A1</span>
-<span class="n">unigram_freq</span> <span class="o">=</span> <span class="p">[(</span><span class="n">word</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vectorizer_unigrams</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(),</span> <span class="n">unigram_counts</span><span class="p">)]</span>
+<span class="n">unigram_freq</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vectorizer_unigrams</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(),</span> <span class="n">unigram_counts</span><span class="p">)</span>
+<span class="p">]</span>
 <span class="n">unigram_freq</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">unigram_freq</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Get most frequent bigrams</span>
 <span class="n">vectorizer_bigrams</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span>
-    <span class="n">stop_words</span><span class="o">=</span><span class="s1">'english'</span><span class="p">,</span>
-    <span class="n">max_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-    <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">stop_words</span><span class="o">=</span><span class="s2">"english"</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">bigram_matrix</span> <span class="o">=</span> <span class="n">vectorizer_bigrams</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'text_clean'</span><span class="p">])</span>
+<span class="n">bigram_matrix</span> <span class="o">=</span> <span class="n">vectorizer_bigrams</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"text_clean"</span><span class="p">])</span>
 <span class="n">bigram_counts</span> <span class="o">=</span> <span class="n">bigram_matrix</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">A1</span>
-<span class="n">bigram_freq</span> <span class="o">=</span> <span class="p">[(</span><span class="n">word</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vectorizer_bigrams</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(),</span> <span class="n">bigram_counts</span><span class="p">)]</span>
+<span class="n">bigram_freq</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vectorizer_bigrams</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(),</span> <span class="n">bigram_counts</span><span class="p">)</span>
+<span class="p">]</span>
 <span class="n">bigram_freq</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bigram_freq</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Create plots</span>
@@ -7901,8 +7896,8 @@ Name: count, dtype: int64</pre>
 <span class="n">ax1</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)),</span> <span class="n">counts</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)))</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Frequency'</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Top 20 Most Frequent Words (Unigrams)'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Frequency"</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Top 20 Most Frequent Words (Unigrams)"</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
 
 <span class="c1"># Plot bigrams</span>
@@ -7910,8 +7905,8 @@ Name: count, dtype: int64</pre>
 <span class="n">ax2</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bigrams</span><span class="p">)),</span> <span class="n">bigram_counts</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bigrams</span><span class="p">)))</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">bigrams</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Frequency'</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Top 20 Most Frequent Bigrams'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Frequency"</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Top 20 Most Frequent Bigrams"</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -7985,21 +7980,32 @@ USER_PROMPT =  ```"annotations:\n"
 <div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">accuracy_score</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">confusion_matrix</span><span class="p">,</span>
+    <span class="n">precision_score</span><span class="p">,</span>
+    <span class="n">recall_score</span><span class="p">,</span>
+    <span class="n">accuracy_score</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
-<span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
-<span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
+<span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">])</span>
 
 <span class="n">selected_model</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'d'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'Blues'</span><span class="p">,</span> 
-            <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">'Predicted Non-antisemitic'</span><span class="p">,</span> <span class="s1">'Predicted antisemitic'</span><span class="p">],</span>
-            <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">'Actual Non-antisemitic'</span><span class="p">,</span> <span class="s1">'Actual antisemitic'</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Confusion Matrix, accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">, precision: </span><span class="si">{</span><span class="n">precision</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">, recall: </span><span class="si">{</span><span class="n">recall</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">selected_model</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+    <span class="n">cm</span><span class="p">,</span>
+    <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">"d"</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"Blues"</span><span class="p">,</span>
+    <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s2">"Predicted Non-antisemitic"</span><span class="p">,</span> <span class="s2">"Predicted antisemitic"</span><span class="p">],</span>
+    <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s2">"Actual Non-antisemitic"</span><span class="p">,</span> <span class="s2">"Actual antisemitic"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"Confusion Matrix, accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, precision: </span><span class="si">{</span><span class="n">precision</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, recall: </span><span class="si">{</span><span class="n">recall</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">selected_model</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8039,11 +8045,25 @@ Let's look where the LLM classifier was wrong:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'is_antisemitic'</span><span class="p">,</span> <span class="s1">'predicted_antisemitic'</span><span class="p">,</span> <span class="s1">'prediction'</span><span class="p">,</span> <span class="s1">'description'</span><span class="p">]</span>
-<span class="n">false_positives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">'predicted_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)][</span><span class="n">columns</span><span class="p">]</span>
-<span class="n">false_negatives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">'predicted_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)][</span><span class="n">columns</span><span class="p">]</span>
-<span class="n">true_positives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">'predicted_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)][</span><span class="n">columns</span><span class="p">]</span>
-<span class="n">true_negatives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">'predicted_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_antisemitic'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)][</span><span class="n">columns</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"text"</span><span class="p">,</span>
+    <span class="s2">"is_antisemitic"</span><span class="p">,</span>
+    <span class="s2">"predicted_antisemitic"</span><span class="p">,</span>
+    <span class="s2">"prediction"</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">false_positives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)][</span>
+    <span class="n">columns</span>
+<span class="p">]</span>
+<span class="n">false_negatives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)][</span>
+    <span class="n">columns</span>
+<span class="p">]</span>
+<span class="n">true_positives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)][</span>
+    <span class="n">columns</span>
+<span class="p">]</span>
+<span class="n">true_negatives</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">"predicted_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)][</span>
+    <span class="n">columns</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -8064,14 +8084,16 @@ Let's look where the LLM classifier was wrong:</p>
 <span class="n">opt</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"display"</span><span class="p">,</span> <span class="s2">"cell-border"</span><span class="p">,</span> <span class="s2">"compact"</span><span class="p">]</span>
 
 
-<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">"""</span>
+<span class="n">display</span><span class="p">(</span>
+    <span class="n">HTML</span><span class="p">(</span><span class="s2">"""</span>
 <span class="s2">&lt;style&gt;</span>
 <span class="s2">table.dataTable { table-layout: fixed; }               /* column widths are respected */</span>
 <span class="s2">table.dataTable td { white-space: normal;              /* allow wrapping */</span>
 <span class="s2">                     word-break: break-word;           /* break long tokens */</span>
 <span class="s2">                     overflow-wrap: anywhere; }</span>
 <span class="s2">&lt;/style&gt;</span>
-<span class="s2">"""</span><span class="p">))</span>
+<span class="s2">"""</span><span class="p">)</span>
+<span class="p">)</span>
 
 
 <span class="n">opt</span><span class="o">.</span><span class="n">autoWidth</span> <span class="o">=</span> <span class="kc">False</span>
