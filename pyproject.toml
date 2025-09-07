@@ -10,6 +10,7 @@ dependencies = [
     "itables>=2.5.2",
     "jupyter>=1.1.1",
     "lab>=8.4",
+    "matplotlib-venn>=1.1.2",
     "openai>=1.102.0",
     "pandas>=2.3.2",
     "requests>=2.32.5",

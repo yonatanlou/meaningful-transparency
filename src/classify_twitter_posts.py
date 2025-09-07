@@ -150,10 +150,7 @@ def main():
         "single" if one_def else "all",
         list(annotations.keys()),
     )
-    logger.info(
-        "System prompt: %s",
-        system_prompt[:100] + "..." if len(system_prompt) > 100 else system_prompt,
-    )
+    logger.info("System prompt: %s", system_prompt)
     logger.info("Starting to process %d samples", total_samples)
 
     for sample_num, (idx, row) in enumerate(samples.iterrows(), 1):
@@ -174,7 +171,6 @@ def main():
         )
 
         prompt = generate_prompt(text, annotations)
-        logger.info("Prompt (truncated): %s", truncate_text(prompt, 800))
 
         try:
             resp = llm(
