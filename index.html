@@ -8127,12 +8127,30 @@ Task:</li>
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7c3e07b2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">original_text</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">PROJECT_ROOT</span><span class="si">}</span><span class="s2">/datasets/GoldStanderDataSet.csv"</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"cp1252"</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">original_text</span> <span class="o">=</span> <span class="n">original_text</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"Text"</span><span class="p">:</span> <span class="s2">"original_text"</span><span class="p">})</span>
+<span class="n">original_text</span> <span class="o">=</span> <span class="n">original_text</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"index"</span><span class="p">:</span> <span class="s2">"original_index"</span><span class="p">})</span>
+
+<span class="n">original_text</span> <span class="o">=</span> <span class="n">original_text</span><span class="p">[[</span><span class="s2">"original_index"</span><span class="p">,</span> <span class="s2">"original_text"</span><span class="p">,</span> <span class="s2">"Username"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a2f825ce-0552-4c8c-bffd-6dd595556482">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">to_manual_review</span> <span class="o">=</span> <span class="n">merged_df</span><span class="p">[[</span><span class="s1">'original_index'</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">,</span> <span class="s1">'is_antisemitic'</span><span class="p">,</span> <span class="s1">'keyword'</span><span class="p">,</span> 
@@ -8143,7 +8161,7 @@ Task:</li>
 <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"error_by_ihra"</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"prediction_IHRA"</span><span class="p">]</span>
 <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"error_by_jd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"prediction_JD"</span><span class="p">]</span>
 <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_manual_review</span><span class="p">[</span><span class="s2">"is_antisemitic"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-
+<span class="n">to_manual_review</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">to_manual_review</span><span class="p">,</span> <span class="n">original_text</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"original_index"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
 <span class="n">to_manual_review</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">PROJECT_ROOT</span><span class="si">}</span><span class="s2">/outputs/twitter_posts_to_manual_review.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8157,19 +8175,19 @@ Task:</li>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>/var/folders/yc/2ky7xhns66nbhnjkcrs4p1nw0000gp/T/ipykernel_65847/2389512357.py:6: SettingWithCopyWarning: 
+<pre>/var/folders/yc/2ky7xhns66nbhnjkcrs4p1nw0000gp/T/ipykernel_65847/3580491828.py:6: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   to_manual_review["error_by_ihra"] = to_manual_review["is_antisemitic"] != to_manual_review["prediction_IHRA"]
-/var/folders/yc/2ky7xhns66nbhnjkcrs4p1nw0000gp/T/ipykernel_65847/2389512357.py:7: SettingWithCopyWarning: 
+/var/folders/yc/2ky7xhns66nbhnjkcrs4p1nw0000gp/T/ipykernel_65847/3580491828.py:7: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   to_manual_review["error_by_jd"] = to_manual_review["is_antisemitic"] != to_manual_review["prediction_JD"]
-/var/folders/yc/2ky7xhns66nbhnjkcrs4p1nw0000gp/T/ipykernel_65847/2389512357.py:8: SettingWithCopyWarning: 
+/var/folders/yc/2ky7xhns66nbhnjkcrs4p1nw0000gp/T/ipykernel_65847/3580491828.py:8: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
