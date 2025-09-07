@@ -20,7 +20,7 @@ A tool for classifying Twitter posts against different antisemitism definitions 
    
    Or with custom parameters:
    ```bash
-   uv run python src/classify_twitter_posts.py --model openai/gpt-4o --temperature 0.2 --n-samples 10 --min-chars 50 --results_filename twitter_posts_classified
+   uv run python src/classify_twitter_posts.py --model anthropic/claude-sonnet-4 --temperature 0.1 --n-samples 750 --min-chars 50 --results_filename twitter_posts_classified_IHRA --one-def "IHRA Definition"
    ```
 
 ## What it does

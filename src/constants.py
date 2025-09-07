@@ -27,7 +27,7 @@ MIN_CHARS = 100
 ANTISEMITISM_RATIO = 0.7
 
 # System prompt for classification
-CLASSIFIER_SYSTEM = """You are a careful text classifier.
+CLASSIFIER_SYSTEM_ALL_DEF = """You are a careful text classifier.
 
 You will be given:
 - a JSON object named "annotations" mapping names to definitions (IHRA Definition, Jerusalem Declaration)
@@ -49,5 +49,27 @@ Output schema:
 
 Rules:
 - answer MUST be exactly one of optional labels: "IHRA Definition", "Jerusalem Declaration + IHRA Definition", "None".
+- description must cite concrete cues from the text
+"""
+CLASSIFIER_SYSTEM_ONE_DEF = """You are a careful text classifier.
+
+You will be given:
+- The definition of antisemitism by <DEFINITION_NAME_PLACEHOLDER>
+- a "text" string to classify
+Task:
+- You should classify if the text is antisemitic according to the given definition.
+- The optional labels are: True (antisemitic by definition), False (not antisemitic by definition).
+- Pick exactly one label.
+- Output JSON only, no extra words.
+
+Output schema:
+{
+  "answer": "<one key from annotations>",
+  "description": "<1 to 3 sentences explaining the choice>"
+}
+
+Rules:
+- Forget all other definitions of antisemitism, except the one by <DEFINITION_NAME_PLACEHOLDER>.
+- answer MUST be exactly True or False
 - description must cite concrete cues from the text
 """

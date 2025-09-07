@@ -5,12 +5,13 @@ from dotenv import load_dotenv
 from datetime import datetime
 from constants import (
     CSV_PATH,
-    LOG_FILE,
+    LOGS_DIR,
     ANNOTATION_GLOB,
     MODEL,
     TEMPERATURE,
     MAX_TOKENS,
-    CLASSIFIER_SYSTEM,
+    CLASSIFIER_SYSTEM_ALL_DEF,
+    CLASSIFIER_SYSTEM_ONE_DEF,
     N_SAMPLES,
     MIN_CHARS,
     ANTISEMITISM_RATIO,
@@ -58,6 +59,13 @@ def parse_args():
         default="twitter_posts_classified",
         help="Base filename for results CSV (default: twitter_posts_classified)",
     )
+    parser.add_argument(
+        "--one-def",
+        type=str,
+        choices=["IHRA Definition", "Jerusalem Declaration", None],
+        default=None,
+        help="Use only one definition for classification (default: None - use all definitions)",
+    )
     return parser.parse_args()
 
 
@@ -71,12 +79,33 @@ def main():
     n_samples = args.n_samples
     min_chars = args.min_chars
     results_filename = args.results_filename
+    one_def = getattr(args, "one_def", None)
 
     # Setup logging
-    logger = setup_logger(str(LOG_FILE), "llm_classifier")
+    logger = setup_logger(
+        str(LOGS_DIR / f"{results_filename}_{int(datetime.now().timestamp())}.log"),
+        "llm_classifier",
+    )
 
     # Load definitions and data
-    annotations = load_definitions(str(ANNOTATION_GLOB))
+    all_annotations = load_definitions(str(ANNOTATION_GLOB))
+
+    # Filter annotations based on --one-def argument
+    if one_def:
+        if one_def in all_annotations:
+            annotations = {one_def: all_annotations[one_def]}
+            system_prompt = CLASSIFIER_SYSTEM_ONE_DEF.replace(
+                "<DEFINITION_NAME_PLACEHOLDER>", one_def
+            )
+        else:
+            logger.error(
+                f"Definition '{one_def}' not found in annotations. Available: {list(all_annotations.keys())}"
+            )
+            return
+    else:
+        annotations = all_annotations
+        system_prompt = CLASSIFIER_SYSTEM_ALL_DEF
+
     twitter_df = pd.read_csv(str(CSV_PATH), encoding="cp1252", low_memory=False)
 
     # Log dataset info
@@ -111,12 +140,20 @@ def main():
     logger.info(
         "Sampled %s rows with Biased=1 and text_length>%s", len(samples), min_chars
     )
-    logger.debug("Sampled rows indices: %s", samples.index.tolist())
+    logger.info("Sampled rows indices: %s", samples.index.tolist())
 
     # Process all samples
     results_rows = []
     total_samples = len(samples)
-    logger.info("System prompt for all prompts %s", CLASSIFIER_SYSTEM)
+    logger.info(
+        "Using %s definition(s): %s",
+        "single" if one_def else "all",
+        list(annotations.keys()),
+    )
+    logger.info(
+        "System prompt: %s",
+        system_prompt[:100] + "..." if len(system_prompt) > 100 else system_prompt,
+    )
     logger.info("Starting to process %d samples", total_samples)
 
     for sample_num, (idx, row) in enumerate(samples.iterrows(), 1):
@@ -137,12 +174,12 @@ def main():
         )
 
         prompt = generate_prompt(text, annotations)
-        logger.debug("Prompt (truncated): %s", truncate_text(prompt, 800))
+        logger.info("Prompt (truncated): %s", truncate_text(prompt, 800))
 
         try:
             resp = llm(
                 [
-                    {"role": "system", "content": CLASSIFIER_SYSTEM},
+                    {"role": "system", "content": system_prompt},
                     {"role": "user", "content": prompt},
                 ],
                 model,
@@ -186,7 +223,7 @@ def main():
             )
             resp_text = '{"answer": "PARSING_ERROR", "description": "' + str(e) + '"}'
 
-        logger.debug("Raw model content (truncated): %s", truncate_text(resp_text, 800))
+        logger.info("Raw model content (truncated): %s", truncate_text(resp_text, 800))
 
         prediction, desc = extract_pred_and_desc(resp_text, annotations)
 
@@ -231,9 +268,7 @@ def main():
     now = datetime.now().strftime("%Y-%m-%d-H:%H-M:%M")
     results_df.to_csv(f"outputs/{results_filename}_{now}.csv", index=False)
 
-    logger.info(
-        "Finished. Results saved to outputs/twitter_posts_classified_%s.csv", now
-    )
+    logger.info(f"Finished. Results saved to outputs/{results_filename}_{now}.csv")
 
 
 if __name__ == "__main__":
