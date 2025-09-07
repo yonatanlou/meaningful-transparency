@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 # Base paths
@@ -25,7 +24,7 @@ TEMPERATURE = 0.1
 MAX_TOKENS = 800
 N_SAMPLES = 2
 MIN_CHARS = 100
-ANTISEMITISM_RATIO = 0.7  
+ANTISEMITISM_RATIO = 0.7
 
 # System prompt for classification
 CLASSIFIER_SYSTEM = """You are a careful text classifier.

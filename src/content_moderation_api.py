@@ -7,11 +7,14 @@ from typing import Dict
 from dotenv import load_dotenv
 from collections import OrderedDict
 
+from googleapiclient import discovery
+from openai import OpenAI
+
 load_dotenv()  # take environment variables from .env file
 # 1) OpenAI Moderation API
 # Docs: omni-moderation-latest model and response fields
 # https://platform.openai.com/docs/guides/moderation  | https://platform.openai.com/docs/models/omni-moderation-latest
-from openai import OpenAI
+
 
 def classify_with_openai(text: str) -> Dict[str, float]:
     """
@@ -22,7 +25,7 @@ def classify_with_openai(text: str) -> Dict[str, float]:
     resp = client.moderations.create(model="omni-moderation-latest", input=text)
     # Pull scores from the first result
     scores = dict(resp.results[0].category_scores)
-    scores = OrderedDict(sorted(scores.items(), key=lambda item: item[1], reverse=True))  
+    scores = OrderedDict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
     return {f"openai:{k}": float(v) for k, v in scores.items()}
 
 
@@ -42,11 +45,6 @@ PERSPECTIVE_ATTRS = {
 }
 
 
-from googleapiclient import discovery
-import json
-
-
-
 def classify_with_perspective(text: str) -> Dict[str, float]:
     """
     Returns {category: probability} using Perspective API.
@@ -57,21 +55,21 @@ def classify_with_perspective(text: str) -> Dict[str, float]:
         raise RuntimeError("Missing PERSPECTIVE_API_KEY")
 
     client = discovery.build(
-    "commentanalyzer",
-    "v1alpha1",
-    developerKey=os.getenv("PERSPECTIVE_API_KEY"),
-    discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
-    static_discovery=False,
+        "commentanalyzer",
+        "v1alpha1",
+        developerKey=os.getenv("PERSPECTIVE_API_KEY"),
+        discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
+        static_discovery=False,
     )
 
     analyze_request = {
-    'comment': { 'text': text },
-    'requestedAttributes': PERSPECTIVE_ATTRS
+        "comment": {"text": text},
+        "requestedAttributes": PERSPECTIVE_ATTRS,
     }
 
     response = client.comments().analyze(body=analyze_request).execute()
     # print(json.dumps(response, indent=2))
-    
+
     data = response
     out = {}
     for attr, obj in data.get("attributeScores", {}).items():
@@ -87,6 +85,7 @@ def classify_with_perspective(text: str) -> Dict[str, float]:
 # https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/moderateText
 GCP_NL_URL = "https://language.googleapis.com/v1/documents:moderateText"
 
+
 def classify_with_google_nl(text: str) -> Dict[str, float]:
     """
     Returns {category: probability} using Google Cloud Natural Language moderateText.
@@ -97,12 +96,7 @@ def classify_with_google_nl(text: str) -> Dict[str, float]:
     if not api_key:
         raise RuntimeError("Missing GOOGLE_CLOUD_API_KEY")
 
-    payload = {
-        "document": {
-            "type": "PLAIN_TEXT",
-            "content": text
-        }
-    }
+    payload = {"document": {"type": "PLAIN_TEXT", "content": text}}
     r = requests.post(
         f"{GCP_NL_URL}?key={api_key}",
         json=payload,
@@ -119,4 +113,3 @@ def classify_with_google_nl(text: str) -> Dict[str, float]:
         if name is not None and conf is not None:
             out[f"google_nl:{name}"] = float(conf)
     return out
-

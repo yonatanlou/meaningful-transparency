@@ -8,19 +8,20 @@ from logging.handlers import RotatingFileHandler
 
 from constants import OPENROUTER_BASE_URL
 
+
 def load_definitions(definitions_dir: str) -> Dict[str, str]:
     """Load antisemitism definitions from markdown files."""
     definitions = {}
     definitions_path = Path(definitions_dir)
-    
+
     if not definitions_path.exists():
         raise FileNotFoundError(f"Directory {definitions_dir} not found")
-    
+
     for md_file in definitions_path.glob("*.md"):
         definition_name = md_file.stem
-        with open(md_file, 'r', encoding='utf-8') as f:
+        with open(md_file, "r", encoding="utf-8") as f:
             definitions[definition_name] = f.read().strip()
-    
+
     if not definitions:
         raise RuntimeError("No definitions found")
     return definitions
@@ -30,13 +31,13 @@ def setup_logger(log_file: str, logger_name: str = "classifier") -> logging.Logg
     """Setup logger with file rotation and console output."""
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
-    
+
     # Avoid duplicate handlers on repeated runs
     if logger.handlers:
         logger.handlers.clear()
-    
+
     fmt = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    
+
     # File handler with rotation
     file_handler = RotatingFileHandler(
         log_file, maxBytes=5_000_000, backupCount=3, encoding="utf-8"
@@ -44,13 +45,13 @@ def setup_logger(log_file: str, logger_name: str = "classifier") -> logging.Logg
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(fmt)
     logger.addHandler(file_handler)
-    
+
     # Console handler
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(fmt)
     logger.addHandler(console_handler)
-    
+
     return logger
 
 
@@ -72,13 +73,15 @@ def generate_prompt(text: str, annotations: Dict[str, str]) -> str:
     )
 
 
-def extract_pred_and_desc(json_text: str, allowed_keys: Dict[str, str]) -> Tuple[str, str]:
+def extract_pred_and_desc(
+    json_text: str, allowed_keys: Dict[str, str]
+) -> Tuple[str, str]:
     """Parse JSON and validate 'answer' against provided annotations keys."""
     try:
         obj = json.loads(json_text)
         answer = obj.get("answer", "")
         desc = obj.get("description", "")
-        
+
         if not desc:
             desc = "Model answer not in annotation keys; fell back to the first key."
         return answer, desc
@@ -90,7 +93,6 @@ def extract_pred_and_desc(json_text: str, allowed_keys: Dict[str, str]) -> Tuple
 def get_answer(resp):
     """Extract answer from OpenAI-style response."""
     return resp["choices"][0]["message"]["content"]
-
 
 
 def _build_headers(
@@ -181,5 +183,3 @@ def llm(
         return data["choices"][0]["message"]["content"]
     except Exception:
         raise RuntimeError(f"Unexpected response shape: {json.dumps(data)[:500]}")
-
-
