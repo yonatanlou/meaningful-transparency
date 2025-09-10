@@ -24,7 +24,7 @@ TEMPERATURE = 0
 MAX_TOKENS = 800
 N_SAMPLES = 2
 MIN_CHARS = 100
-ANTISEMITISM_RATIO = 0.7
+ANTISEMITISM_RATIO = 0.5
 
 # System prompt for classification
 CLASSIFIER_SYSTEM_ALL_DEF = """You are a careful text classifier.

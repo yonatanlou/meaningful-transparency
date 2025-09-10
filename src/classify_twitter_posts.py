@@ -10,17 +10,15 @@ from constants import (
     MODEL,
     TEMPERATURE,
     MAX_TOKENS,
-    CLASSIFIER_SYSTEM_ALL_DEF,
     CLASSIFIER_SYSTEM_ONE_DEF,
     N_SAMPLES,
-    MIN_CHARS,
     ANTISEMITISM_RATIO,
 )
+from pathlib import Path
 from utils import (
     load_definitions,
     setup_logger,
     truncate_text,
-    generate_prompt,
     extract_pred_and_desc,
     get_answer,
     llm,
@@ -48,12 +46,6 @@ def parse_args():
         help=f"Number of samples to classify (default: {N_SAMPLES})",
     )
     parser.add_argument(
-        "--min-chars",
-        type=int,
-        default=MIN_CHARS,
-        help=f"Minimum character length for posts (default: {MIN_CHARS})",
-    )
-    parser.add_argument(
         "--results_filename",
         type=str,
         default="twitter_posts_classified",
@@ -62,9 +54,9 @@ def parse_args():
     parser.add_argument(
         "--one-def",
         type=str,
-        choices=["IHRA Definition", "Jerusalem Declaration", None],
-        default=None,
-        help="Use only one definition for classification (default: None - use all definitions)",
+        choices=["IHRA Definition"],
+        default="IHRA Definition",
+        help="Use IHRA Definition for classification (only option available)",
     )
     parser.add_argument(
         "--dataset",
@@ -84,35 +76,39 @@ def main():
     model = args.model
     temperature = args.temperature
     n_samples = args.n_samples
-    min_chars = args.min_chars
     results_filename = args.results_filename
     one_def = getattr(args, "one_def", None)
     dataset = args.dataset
 
     # Setup logging
+    log_path = LOGS_DIR / f"{results_filename}_{int(datetime.now().timestamp())}.log"
+
+    # Create directory if it doesn't exist
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+
     logger = setup_logger(
-        str(LOGS_DIR / f"{results_filename}_{int(datetime.now().timestamp())}.log"),
+        str(log_path),
         "llm_classifier",
     )
 
     # Load definitions and data
     all_annotations = load_definitions(str(ANNOTATION_GLOB))
 
-    # Filter annotations based on --one-def argument
-    if one_def:
-        if one_def in all_annotations:
-            annotations = {one_def: all_annotations[one_def]}
-            system_prompt = CLASSIFIER_SYSTEM_ONE_DEF.replace(
-                "<DEFINITION_NAME_PLACEHOLDER>", one_def
-            )
-        else:
-            logger.error(
-                f"Definition '{one_def}' not found in annotations. Available: {list(all_annotations.keys())}"
-            )
-            return
-    else:
-        annotations = all_annotations
-        system_prompt = CLASSIFIER_SYSTEM_ALL_DEF
+    # Use only IHRA Definition
+    if one_def != "IHRA Definition":
+        logger.error(f"Only 'IHRA Definition' is supported, got: {one_def}")
+        raise ValueError("Only 'IHRA Definition' is supported")
+
+    if one_def not in all_annotations:
+        logger.error(
+            f"Definition '{one_def}' not found in annotations. Available: {list(all_annotations.keys())}"
+        )
+        raise ValueError(f"Definition '{one_def}' not found")
+
+    annotations = {one_def: all_annotations[one_def]}
+    system_prompt = CLASSIFIER_SYSTEM_ONE_DEF.replace(
+        "<DEFINITION_NAME_PLACEHOLDER>", one_def
+    )
 
     # Choose dataset path based on argument
     if dataset == "train":
@@ -122,7 +118,7 @@ def main():
     else:  # original
         raise NotImplementedError("Original dataset not implemented yet")
 
-    twitter_df = pd.read_csv(str(dataset_path), encoding="cp1252", low_memory=False)
+    twitter_df = pd.read_csv(str(dataset_path), low_memory=False)
 
     # Log dataset info
     logger.info(
@@ -138,9 +134,6 @@ def main():
         lambda x: re.sub(r"@\w+", "", str(x)) if pd.notna(x) else x
     )
     twitter_df["Text"] = twitter_df["Text"].str.strip()
-    twitter_df["text_length"] = twitter_df["Text"].apply(
-        lambda x: len(str(x)) if pd.notna(x) else 0
-    )
 
     samples = twitter_df[twitter_df["Text"].notna()].copy()
     samples = pd.concat(
@@ -153,20 +146,26 @@ def main():
             ),
         ]
     )
-    logger.info(
-        "Sampled %s rows with Biased=1 and text_length>%s", len(samples), min_chars
-    )
+    logger.info("Sampled %s rows from dataset", len(samples))
     logger.info("Sampled rows indices: %s", samples.index.tolist())
 
     # Process all samples
     results_rows = []
     total_samples = len(samples)
     logger.info(
-        "Using %s definition(s): %s",
-        "single" if one_def else "all",
-        list(annotations.keys()),
+        "Using single definition: %s",
+        list(annotations.keys())[0],
     )
     logger.info("System prompt: %s", system_prompt)
+    user_prompt = (
+        all_annotations[one_def]
+        + "\n"
+        + "\n\ntext:\n"
+        + "<text>"
+        + "\n\nRespond with JSON only matching the schema."
+    )
+    logger.info("User prompt template: %s", user_prompt)
+
     logger.info("Starting to process %d samples", total_samples)
 
     for sample_num, (idx, row) in enumerate(samples.iterrows(), 1):
@@ -186,13 +185,19 @@ def main():
             keyword,
         )
 
-        prompt = generate_prompt(text, annotations)
+        user_prompt = (
+            all_annotations[one_def]
+            + "\n"
+            + "\n\ntext:\n"
+            + text
+            + "\n\nRespond with JSON only matching the schema."
+        )
 
         try:
             resp = llm(
                 [
                     {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": prompt},
+                    {"role": "user", "content": user_prompt},
                 ],
                 model,
                 response_format={"type": "json_object"},
@@ -278,9 +283,14 @@ def main():
     )
 
     now = datetime.now().strftime("%Y-%m-%d-H:%H-M:%M")
-    results_df.to_csv(f"outputs/{results_filename}_{now}.csv", index=False)
+    output_path = Path("outputs") / f"{results_filename}_{now}.csv"
 
-    logger.info(f"Finished. Results saved to outputs/{results_filename}_{now}.csv")
+    # Create directory if it doesn't exist
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    results_df.to_csv(output_path, index=False)
+
+    logger.info(f"Finished. Results saved to {output_path}")
 
 
 if __name__ == "__main__":

@@ -10,16 +10,23 @@ from constants import OPENROUTER_BASE_URL
 
 
 def load_definitions(definitions_dir: str) -> Dict[str, str]:
-    """Load antisemitism definitions from markdown files."""
+    """Load antisemitism definitions from markdown and XML files."""
     definitions = {}
     definitions_path = Path(definitions_dir)
 
     if not definitions_path.exists():
         raise FileNotFoundError(f"Directory {definitions_dir} not found")
 
+    # Load markdown files
     for md_file in definitions_path.glob("*.md"):
         definition_name = md_file.stem
         with open(md_file, "r", encoding="utf-8") as f:
+            definitions[definition_name] = f.read().strip()
+
+    # Load XML files
+    for xml_file in definitions_path.glob("*.xml"):
+        definition_name = xml_file.stem
+        with open(xml_file, "r", encoding="utf-8") as f:
             definitions[definition_name] = f.read().strip()
 
     if not definitions:
@@ -64,6 +71,7 @@ def truncate_text(s: str | None, n: int = 1500) -> str:
 
 def generate_prompt(text: str, annotations: Dict[str, str]) -> str:
     """Generate the user prompt content for classification."""
+
     return (
         "annotations:\n"
         + json.dumps(annotations, ensure_ascii=False, indent=2)
