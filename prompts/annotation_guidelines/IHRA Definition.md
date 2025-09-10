@@ -1,162 +1,157 @@
-# Annotation Guidelines for Identifying Antisemitism Based on IHRA Working Definition
+<annotation_guidelines>
 
-## 1. Task Description
+<name>
+IHRA (International Holocaust Remembrance Alliance) working definition of antisemitism
+</name>
 
-### Overview
-These guidelines are designed to help annotators identify antisemitic content in text according to the International Holocaust Remembrance Alliance (IHRA) working definition of antisemitism, adopted on May 26, 2016. The IHRA definition provides a comprehensive framework for recognizing various forms of antisemitism in contemporary discourse.
+<definition>
+Antisemitism is a certain perception of Jews, which may be expressed as hatred toward Jews. Rhetorical and physical manifestations of antisemitism are directed toward Jewish or non-Jewish individuals and/or their property, toward Jewish community institutions and religious facilities.
+</defintion>
 
-### Purpose
-The purpose of these annotations is to systematically identify content that perpetuates antisemitic views, stereotypes, or hatred toward Jewish people, while distinguishing such content from legitimate political criticism and factual discourse. This work supports efforts to combat antisemitism and promote understanding of how it manifests in various forms of communication.
+<guidelines>
+To guide IHRA in its work, the following examples may serve as illustrations:
 
-### What You Will Do
-You will examine text passages and assign one of three labels (ANTISEMITIC, NOT_ANTISEMITIC, or UNCLEAR) based on whether the content meets the IHRA criteria for antisemitism. Your analysis should consider the overall context and apply the specific examples and manifestations outlined in the IHRA definition.
+1. Manifestations might include the targeting of the state of Israel, conceived as a Jewish collectivity. However, criticism of Israel similar to that leveled against any other country cannot be regarded as antisemitic. Antisemitism frequently charges Jews with conspiring to harm humanity, and it is often used to blame Jews for “why things go wrong.” It is expressed in speech, writing, visual forms and action, and employs sinister stereotypes and negative character traits.
 
-## 2. Label Descriptions
+2.0 Manifestations might include the targeting of the state of Israel, conceived as a Jewish collectivity. However,
+criticism of Israel similar to that leveled against any other country cannot be regarded as antisemitic. Antisemitism
+frequently charges Jews with conspiring to harm humanity, and it is often used to blame Jews for “why things go
+wrong.” It is expressed in speech, writing, visual forms and action, and employs sinister stereotypes and negative
+character traits.
+2.1 Contemporary examples of antisemitism in public life, the media, schools, the workplace, and in the religious sphere
+could, taking into account the overall context, include, but are not limited to:
+2.1.1 Calling for, aiding, or justifying the killing or harming of Jews in the name of a radical ideology or an extremist view
+of religion.
+2.1.2 Making mendacious, dehumanizing, demonizing, or stereotypical allegations about Jews as such or the power of
+Jews as collective — such as, especially but not exclusively, the myth about a world Jewish conspiracy or of Jews
+controlling the media, economy, government or other societal institutions.
+2.1.3 Accusing Jews as a people of being responsible for real or imagined wrongdoing committed by a single Jewish
+person or group, or even for acts committed by non-Jews.
+2.1.4 Denying the fact, scope, mechanisms (e.g. gas chambers) or intentionality of the genocide of the Jewish people at
+the hands of National Socialist Germany and its supporters and accomplices during World War II (the Holocaust).
+2.1.5 Accusing the Jews as a people, or Israel as a state, of inventing or exaggerating the Holocaust.
+2.1.6 Accusing Jewish citizens of being more loyal to Israel, or to the alleged priorities of Jews worldwide, than to the
+interests of their own nations.
+2.1.7 Denying the Jewish people their right to self-determination, e.g., by claiming that the existence of a State of Israel
+is a racist endeavor.
+2.1.8 Applying double standards by requiring of it a behavior not expected or demanded of any other democratic nation.
+2.1.9 Using the symbols and images associated with classic antisemitism (e.g., claims of Jews killing Jesus or blood libel)
+to characterize Israel or Israelis.
+2.1.10 Drawing comparisons of contemporary Israeli policy to that of the Nazis.
+2.1.11 Holding Jews collectively responsible for actions of the state of Israel.
+3.0 Antisemitic acts are criminal when they are so defined by law (for example, denial of the Holocaust or distribution of antisemitic materials in some countries).
 
-### ANTISEMITIC
-Content that contains one or more of the following elements as defined by the IHRA:
-- Calls for, aids, or justifies killing or harming Jews in the name of radical ideology or extremist religious views
-- Makes mendacious, dehumanizing, demonizing, or stereotypical allegations about Jews as a collective
-- Promotes myths about Jewish world conspiracy or Jewish control of media, economy, government, or other institutions
-- Accuses Jews collectively of wrongdoing committed by individuals
-- Denies or distorts the Holocaust (fact, scope, mechanisms, or intentionality)
-- Accuses Jews or Israel of inventing or exaggerating the Holocaust
-- Questions Jewish citizens' loyalty (dual loyalty accusations)
-- Denies Jewish people's right to self-determination
-- Applies double standards to Israel not expected of other democratic nations
-- Uses classic antisemitic symbols/images (blood libel, deicide) against Israel/Israelis
-- Compares Israeli policy to Nazi actions
-- Holds Jews collectively responsible for Israel's actions
+4.0 Criminal acts are antisemitic when the targets of attacks, whether they are
+people or property – such as buildings, schools, places of worship and cemeteries – are selected because they are, or are
+perceived to be, Jewish or linked to Jews.] 
+5.0 Antisemitic discrimination is the denial to Jews of opportunities or
+services available to others and is illegal in many countries.
 
-### NOT_ANTISEMITIC
-Content that:
-- Contains criticism of Israel similar to that leveled against any other country
-- Discusses Jewish people, Judaism, or Israel in factual, neutral, or positive terms
-- Engages in legitimate political discourse without employing antisemitic tropes
-- Addresses Israeli policies or actions without targeting Jews as a collective
-- Contains historical, educational, or analytical content free from antisemitic elements
+</guidelines>
 
-### UNCLEAR
-Content where:
-- The meaning or intent is ambiguous and could be interpreted multiple ways
-- Insufficient context prevents definitive classification
-- The text contains coded language that might or might not be antisemitic
-- Additional information would be needed to determine the presence of antisemitism
 
-## 3. Annotation Examples
+<clarification>
 
-### Clear Examples of ANTISEMITIC Content
+The definition notes that non-Jewish individuals can also become victims of antisemitism. We infer from
+guideline 4.0 that this is the case if they are perceived to be Jewish or linked to Jews. Additionally, we infer from guideline
+2.1.2 that rhetoric can be antisemitic even if no specific Jewish individual or communal institution is targeted, but rather,
+the target is an abstract Jewish collective.
+guideline 2.1 lists 11 examples of contemporary forms of antisemitism. The IHRA has made it clear in additional statements that the examples are part of the definition.
+The example of Holocaust denial (2.14) includes denying the scope and the intentionality of the genocide of the Jewish people. Denying the scope of the Holocaust means denying that close to six million Jews were murdered for being Jews.
+The IHRA also adopted a “Working Definition of Holocaust Denial and Distortion.” It is in accordance with its definition of antisemitism and further exemplifies that Holocaust denial “may include publicly denying or calling into doubt the use of principal mechanisms of destruction (such as gas chambers, mass shooting, starvation and torture)” and also “blaming
+the Jews for either exaggerating or creating the Shoah for political or financial gain as if the Shoah itself was the result of a conspiracy plotted by the Jews.”
+2.1.7 mentions denying the Jewish people their right to self-determination. Taking into account the next example, 2.1.8,
+“Applying double standards by requiring of it a behavior not expected or demanded of any other democratic nation” we
+include the denial of Israel’s right to exist in its geographical region. However, the second part of 3.1.7, “claiming that
+the existence of a State of Israel is a racist endeavor” does not mean that all accusations of racism against Israel are
+antisemitic. It means that claiming that a State of Israel as per se racist (or an Apartheid state) is an example of denying
+the Jewish people their right to self-determination and is therefore antisemitic.
+The Working Definition mentions “mendacious, dehumanizing, demonizing, or stereotypical allegations about Jews as
+such” and “classic stereotypes” without listing them explicitly. Below you find a composite of allegations and
+stereotypes that have become part of that repertoire. We compiled them by looking at descriptions that other scholars
+have identified as prominent antisemitic stereotypes in the past 2000 years.
+Antisemitic allegations and stereotypes can be made by characterizing “the Jews” or by ascribing certain physical traits
+to them. Accusations of wrongdoing on the part of Jews also form part of the rich history of antisemitic stereotypes, as
+well as certain tropes. They can also be shown in the demonization of things and individuals that are thought of as being
+representative of Jews or Jewish beliefs. Certain beliefs, usually religious in nature, advocate for the punishment of Jews
+and also belong to the antisemitic tradition. Endorsing Nazism, Holocaust denial, or Israel-related forms of antisemitism
+are newer phenomena that are addressed explicitly and with examples in the working definition.
 
-| Example Text | Explanation |
-|--------------|-------------|
-| "Jews control all the banks and media worldwide" | Classic conspiracy theory about Jewish collective power |
-| "The Holocaust never happened the way they claim" | Holocaust denial |
-| "Jewish Americans care more about Israel than America" | Dual loyalty accusation |
-| "Israel is doing to Palestinians what Nazis did to Jews" | Nazi comparison |
-| "The Rothschilds and other Jewish bankers orchestrate global financial crises" | Conspiracy theory about Jewish control |
-| "Jews use the Holocaust to gain sympathy and money" | Accusation of exploiting the Holocaust |
 
-### Clear Examples of NOT_ANTISEMITIC Content
+Supposed “ Jewish character ” is portrayed as stingy; greedy; immensely rich; being good with money; exploitative;
+corrupt; amoral; perverted; ruthless; cruel; heartless; anti-national/cosmopolitan; treacherous; disloyal; fraudulent;
+dishonest; untrustworthy; hypocrites; materialist; swank; work-shy; uncreative; intelligent; possess superhuman powers;
+arrogant; stubborn; culturally backwards; superstitious; ridiculous; dishonorable; hyper-sexual; ritually unclean; tribal;
+clannish; secretive; racist; men: effeminate and also lecherous; women: femme-fatal.
+Supposed “ Jewish physical stereotypes ” are hooked noses; pointed beards; big ears; a weak or hunched frame; a dark
+complexion; hooves; horns; a tail and a goatee; unruly red or black hair; goggled eyes; blinded eyes; tired eyes; large
+lips; and an odor.
+Antisemitic imagery can be found in depictions of Jews as the "wandering Jew”; demonic figures; lavishly rich capitalists;
+money/gold hoarding; hooked-nosed communists; heartless merchants; parasites and vile creatures such as beasts;
+octopi; snakes; rats; germs; and blood sucking entities.
+Supposed “ Jewish crimes ” include the charge of deicide/ killing Jesus; being in league with the devil; seeking to destroy
+non-Jewish civilizations; working with alleged conspiratorial groups thriving for world power, such as Rothschilds,
+Freemasons, Illuminati, Jewish lobby, Zionist Lobby, Zionist Neocons, ZOG (Zionist Occupied Government); waging a
+(proxy) war against Islam/ Christianity; luring Christians/ Muslims away from Christianity/ Islam; profanation of Christian
+symbols; host desecration; practicing witchcraft; usury; profiteering; exploiting non-Jews; running transnational,
+allegedly “Jewish companies” in the interest of the Jews such as McDonalds, Starbucks, Coca Cola, Facebook; using
+blood from non-Jews for ritual purposes; killing or mutilating children for ritual purposes; adoring false gods and idols,
+such as the Golden Calf and Moloch; rejecting truth and being blind to the truth; perverting scripture; sticking to the
+letters but not the spirit of religious texts; falsifying scripture; having tried to murder the prophet Mohammed; well
+poisoning; causing epidemics, such as Black Death and AIDS; being responsible for the slave trade; poisoning non-Jews;
+aspiring to control the world secretly; secretly controlling world finance, country governments, media, Hollywood;
+orchestrating wars, revolutions, disasters (such as 9/11 and the subsequent wars in the Middle East); undermining
+culture and morals, especially concerning sexuality; degrading culture, music, science; degenerating race purity;
+undermining and betraying their countries of residence; inventing the Holocaust or exaggerating the Holocaust for
+material gain; being responsible for Christianity and the power of the church, for oligarchies, financial speculation,
+exploitation, capitalism, modernity, communism, bolshevism, liberalism, democracy, urbanization, Americanization, and
+globalization.
+Demonization of things associated with Jews or of individuals seen as representative of Jews include the demonization
+of synagogues, Judaism, the Talmud, Kabbalah; the Judaization of enemies (using “Jew” as an insult); and the
+demonization of prominent Jews, such George Soros, Ariel Sharon, Benjamin Netanyahu, and Abraham Foxman as Jews.
+Nonvisual memes or recurrent phraseology that are part of an antisemitic repertoire in different historical and cultural
+contexts include “Jews are the children/ spawn of Satan; synagogue of Satan; God has (eternally) cursed the Jews;
+Judaism (Jewish alleged choseness) is racist; Jews don’t have a home country and cannot be a nation; Jews have no
+culture; Crypto Jews (converted Jews or their offspring remain Jewish and secretly act in the ‘Jewish interest’); ‘Jewish
+spirit’ in science, music, culture is harmful to non-Jews; use of the terms ‘Jewish terror’ or ‘Zydokumuna’ for purges
+under communism; Jewish soldiers in WW1/ WW2 were traitors; all pro-Jewish or pro-Israeli organizations are funded/
+operated by the Mossad; Jews are descendants of monkeys and pigs; Jews should never be taken as friends; Jews are
+the eternal enemies of Islam and Muslims. Muslims will kill the Jews at the end of time; reference to the battle of
+Khaybar; synagogues should be set on fire; Jews killed or sold out their own prophets/the son of God; Jews try to evade
+taxes/ Jews don’t pay taxes; Hitler let some Jews live so that the world would know why he exterminated Jews;
+‘International Zionism’ prevents a critical discussion about the Holocaust.”
+Calls for punishment or justification of Jewish suffering have also been part of an antisemitic discourse, mostly in
+religious contexts, such as “Jewish suffering is punishment by God; Humiliation and misery of Jews is proof of the truth
+of Christianity/Islam. Misery of Jews is proof of truth of Christianity.; Jews should be burnt as a form of punishment;
+Persecution of Jews under Hitler was punishment by God."
+Holocaust denial is described in the IHRA Definition of Antisemitism. The more detailed IHRA Working Definition of
+Holocaust Denial and Distortion is used as additional guidance.
+Endorsing Nazism today means endorsing the systematic killings of Jews by the Nazis (and their helpers). It i s often done
+by the affirmative use of pro-Nazi memes and symbols.
+Manifestations of antisemitism related to Israel are described in the Working Definition, including examples.
+Additional, frequently used antisemitic concepts include "Jews crucify or ritually kill Palestinians" and the use of terms
+such as "Zionist Entity" to describe the State of Israel, which is a refusal to acknowledge the existence of Israel and thus
+a form of denying the Jewish people their right to self-determination. The following claims are “comparisons of
+contemporary Israeli policy to that of the Nazis” (example 3.1.10 in the working definition): equating Israeli politicians
+with Nazi leaders, such as Netanyahu = Hitler; claims that Israel engages in genocide/ “a Holocaust” against the
+Palestinian people; claims that the situation in the Gaza Strip is similar to the situation in the Warsaw Ghetto; using Nazi
+vocabulary to describe and denounce actions by the Israeli state, such as claims that Israel wages a war of extermination
+against the Palestinians.
+Most symbols that have an antisemitic connotation are positive references to Nazism or to the Holocaust, such as the
+swastika or other Nazi or Nazi-predecessor flags, the Hitler salute, emblems of Nazi organizations such as the SS, Nazi
+slogans such as “Blut und Ehre” (blood and honor), or numbers representing “Heil Hitler” (88), “Adolf Hitler” (18).
+Positive references to the Holocaust used to manifest endorsement for the killing of J ews include symbols representing
+Zyklon B gas, including hissing noises, or references to ovens that were used to burn the people who were gassed
+(including pictures taken from these ovens).
+The ADL Hate Symbols Database provides an extensive list of symbols used by hate groups, mostly white supremacists
+and Neo-Nazis.^4 This list helps us to contextualize tweets. We consider all symbols with positive references to Nazism
+antisemitic because they implicitly endorse the murder of Jews. Symbols by extremist Christian and Muslim groups are
+not as extensively documented (Ostovar 2017).^5 Some Jihadist groups, such as Hamas or Houthi,^6 are known for their
+antisemitism and lethally targeting victims as Jews. Endorsing the aforementioned groups is treated as a context
+suggesting antisemitism, but is annotated as antisemitic only when there are other references in the tweets to Jews,
+Judaism, or Israel that make an antisemitic reading of it likely.
 
-| Example Text | Explanation |
-|--------------|-------------|
-| "Israel's settlement policy violates international law" | Legitimate policy criticism |
-| "The Israeli government should reconsider its approach to the two-state solution" | Political criticism without antisemitic elements |
-| "Jewish contributions to science and arts have enriched our culture" | Positive factual statement |
-| "The Israeli Supreme Court's recent decision raises constitutional questions" | Factual analysis of legal matters |
-| "Many Israeli citizens oppose the current government's policies" | Factual reporting about political diversity |
 
-### Edge Cases and Ambiguous Examples
+</clarification>
 
-| Example Text | Label | Explanation |
-|--------------|-------|-------------|
-| "They have too much influence in Hollywood" | UNCLEAR | Ambiguous pronoun "they" - needs context to determine if referring to Jews |
-| "Israel shouldn't exist" | ANTISEMITIC | Denies Jewish right to self-determination |
-| "Israel shouldn't exist in its current form" | NOT_ANTISEMITIC | Political opinion about state structure, not denying right to exist |
-| "Powerful lobbies control our foreign policy" | UNCLEAR | Could be antisemitic dog whistle or general political commentary |
-| "Questions need to be asked about historical narratives" | UNCLEAR | Too vague - could be innocent inquiry or Holocaust denial |
-
-## 4. Handling Ambiguous Cases
-
-### Decision Tree for Ambiguous Content
-
-1. **Does the text reference the Holocaust?**
-   - If denial, distortion, or minimization → **ANTISEMITIC**
-   - If factual historical discussion → **NOT_ANTISEMITIC**
-   - If vague questioning without context → **UNCLEAR**
-
-2. **Is criticism directed at Israel/Israeli government?**
-   - Does it use Nazi comparisons or blood libel? → **ANTISEMITIC**
-   - Does it deny Israel's right to exist? → **ANTISEMITIC**
-   - Is it similar to criticism of other countries? → **NOT_ANTISEMITIC**
-   - Is it about specific policies without antisemitic tropes? → **NOT_ANTISEMITIC**
-
-3. **Does the text reference Jewish people collectively?**
-   - Does it attribute negative characteristics to all Jews? → **ANTISEMITIC**
-   - Does it promote conspiracy theories? → **ANTISEMITIC**
-   - Is it factual or statistical without stereotyping? → **NOT_ANTISEMITIC**
-
-4. **Are there coded words or dog whistles?**
-   - "Globalists," "cosmopolitans," "international bankers" with negative connotation → Consider context, likely **ANTISEMITIC**
-   - If meaning is genuinely ambiguous → **UNCLEAR**
-
-### Context Considerations
-- Examine surrounding text for clarifying information
-- Consider the source and platform if known
-- Look for patterns across multiple statements
-- Identify whether criticism targets actions/policies or people/identity
-- Distinguish between ignorance and intentional antisemitism when possible
-
-## 5. Special Instructions
-
-### Coded Language
-Be aware of common antisemitic dog whistles and coded language:
-- "Globalists" or "internationalists" (when used pejoratively)
-- "Cultural Marxists"
-- "(((Triple parentheses)))" around names
-- "Cosmopolitan elite"
-- "Puppet masters" or "string pullers"
-- References to "Soros" as controlling events
-- "Zionist Occupied Government" (ZOG)
-
-### Cultural and Regional Differences
-- Consider that antisemitic tropes may vary by region
-- Be aware of translation issues that might affect meaning
-- Recognize that some criticism may stem from different political contexts
-- Account for historical and cultural factors that might influence expression
-
-## 6. Quality Checklist
-
-Before finalizing your annotation, verify:
-- [ ] You've read the entire text passage carefully
-- [ ] You've considered the overall context
-- [ ] You've checked against IHRA's specific examples
-- [ ] You've distinguished between legitimate criticism and antisemitism
-- [ ] You've identified any coded language or dog whistles
-- [ ] You've applied the decision tree for ambiguous cases
-- [ ] Your annotation is based on content, not assumptions about intent
-- [ ] You've been consistent with similar cases
-
-## 7. Common Mistakes to Avoid
-
-1. **Over-labeling**: Not all criticism of Israel or Israeli policies is antisemitic
-2. **Under-labeling**: Missing subtle dog whistles or coded antisemitic language
-3. **Ignoring context**: Failing to consider surrounding text that clarifies meaning
-4. **Intent confusion**: Focusing on presumed intent rather than actual content
-5. **False equivalence**: Treating all negative mentions of Jews/Israel as equal
-6. **Historical ignorance**: Not recognizing classical antisemitic tropes in modern forms
-7. **Binary thinking**: Forcing unclear cases into ANTISEMITIC or NOT_ANTISEMITIC when UNCLEAR is appropriate
-8. **Personal bias**: Allowing personal political views to influence annotation
-
-## 8. Final Reminders
-
-- **Consistency is key**: Apply the same standards across all annotations
-- **When in doubt, refer to IHRA examples**: The definition provides specific illustrations to guide decisions
-- **Document uncertainty**: Use UNCLEAR when genuinely ambiguous
-- **Focus on content**: Analyze what is actually written, not what might be implied
-- **Maintain objectivity**: Your role is to identify antisemitism as defined by IHRA, not to make broader political judgments
-- **Remember the purpose**: These annotations help identify and combat antisemitism while preserving space for legitimate discourse
-- **Context matters**: A statement's meaning can change significantly based on surrounding content
-- **Stay updated**: Antisemitic language and tactics evolve; be aware of emerging patterns
-
-The goal is to create reliable, consistent annotations that accurately identify antisemitic content according to the IHRA working definition while maintaining space for legitimate political criticism and discourse.
+</annotation_guidelines>
