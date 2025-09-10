@@ -4,7 +4,7 @@ import argparse
 from dotenv import load_dotenv
 from datetime import datetime
 from constants import (
-    CSV_PATH,
+    DATA_DIR,
     LOGS_DIR,
     ANNOTATION_GLOB,
     MODEL,
@@ -66,6 +66,13 @@ def parse_args():
         default=None,
         help="Use only one definition for classification (default: None - use all definitions)",
     )
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        choices=["train", "test", "original"],
+        default="original",
+        help="Dataset to use: train, test, or original (default: original)",
+    )
     return parser.parse_args()
 
 
@@ -80,6 +87,7 @@ def main():
     min_chars = args.min_chars
     results_filename = args.results_filename
     one_def = getattr(args, "one_def", None)
+    dataset = args.dataset
 
     # Setup logging
     logger = setup_logger(
@@ -106,12 +114,21 @@ def main():
         annotations = all_annotations
         system_prompt = CLASSIFIER_SYSTEM_ALL_DEF
 
-    twitter_df = pd.read_csv(str(CSV_PATH), encoding="cp1252", low_memory=False)
+    # Choose dataset path based on argument
+    if dataset == "train":
+        dataset_path = DATA_DIR / "train_test_datasets" / "train.csv"
+    elif dataset == "test":
+        dataset_path = DATA_DIR / "train_test_datasets" / "test.csv"
+    else:  # original
+        raise NotImplementedError("Original dataset not implemented yet")
+
+    twitter_df = pd.read_csv(str(dataset_path), encoding="cp1252", low_memory=False)
 
     # Log dataset info
     logger.info(
-        "Loaded CSV: path=%s shape=%s columns=%s",
-        CSV_PATH,
+        "Loaded %s dataset: path=%s shape=%s columns=%s",
+        dataset,
+        dataset_path,
         twitter_df.shape,
         list(twitter_df.columns),
     )
@@ -126,7 +143,6 @@ def main():
     )
 
     samples = twitter_df[twitter_df["Text"].notna()].copy()
-    samples = samples[(samples["text_length"] > min_chars)]
     samples = pd.concat(
         [
             samples[samples["Biased"] == 0].sample(

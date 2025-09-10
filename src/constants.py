@@ -10,17 +10,17 @@ LOGS_DIR = PROJECT_ROOT / "logs"
 LOGS_DIR.mkdir(exist_ok=True)
 
 # File paths
-CSV_PATH = DATA_DIR / "GoldStanderDataSet.csv"
+CSV_PATH = DATA_DIR / "GoldStandard2024.csv"
 ANNOTATION_GLOB = PROMPTS_DIR / "annotation_guidelines"
 OUT_CSV = PROJECT_ROOT / "twitter_posts_classified.csv"
-LOG_FILE = LOGS_DIR / "llm_classifier.log"
+
 
 # API configuration
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 MODEL = "anthropic/claude-sonnet-4"
 
 # LLM parameters
-TEMPERATURE = 0.1
+TEMPERATURE = 0
 MAX_TOKENS = 800
 N_SAMPLES = 2
 MIN_CHARS = 100
@@ -52,7 +52,6 @@ Rules:
 - description must cite concrete cues from the text
 """
 CLASSIFIER_SYSTEM_ONE_DEF = """You are a careful text classifier.
-
 You will be given:
 - The definition of antisemitism by <DEFINITION_NAME_PLACEHOLDER>
 - a "text" string to classify
