@@ -1,12 +1,13 @@
 import os
 import json
+import pandas as pd
 import requests
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 from logging.handlers import RotatingFileHandler
 
-from constants import OPENROUTER_BASE_URL
+from constants import OPENROUTER_BASE_URL, PROJECT_ROOT
 
 
 def load_definitions(definitions_dir: str) -> Dict[str, str]:
@@ -191,3 +192,9 @@ def llm(
         return data["choices"][0]["message"]["content"]
     except Exception:
         raise RuntimeError(f"Unexpected response shape: {json.dumps(data)[:500]}")
+
+
+def load_trainset() -> pd.DataFrame:
+    """Load the original training dataset from CSV."""
+    train_path = f"{PROJECT_ROOT}/datasets/train_test_datasets/train.csv"
+    return pd.read_csv(train_path)
