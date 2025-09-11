@@ -1,1 +1,1 @@
-# uv run python src/classify_twitter_posts.py --model anthropic/claude-sonnet-4 --temperature 0 --n-samples 500  --results_filename 500_samples_ihra_half_antisemitic/twitter_posts_classified_IHRA --dataset train
+# uv run python src/classify_twitter_posts.py --model anthropic/claude-sonnet-4 --temperature 0 --n-samples 500  --results_filename 500_samples_ihra_half_antisemitic_no_urls/twitter_posts_classified_IHRA --dataset train

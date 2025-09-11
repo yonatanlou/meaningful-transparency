@@ -154,7 +154,6 @@ dmypy.json
 
 # Data files (large datasets)
 *.zip
-*.csv
 *.parquet
 *.h5
 *.hdf5

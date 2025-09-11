@@ -137,7 +137,7 @@ def apply_filters(df: pd.DataFrame) -> pd.DataFrame:
     mentions_ok = df["n_mentions_in_text"] <= MAX_MENTIONS_IN_TEXT
     noise_ratio_ok = df["no_text_ratio"] <= MAX_NO_TEXT_RATIO
     no_non_twitter_url = ~df["flag_non_twitter_url"]
-    is_twitter_url = df["flag_twitter_url"]
+    no_twitter_url = ~df["flag_twitter_url"]
 
     # Combine all rules
     row_is_valid = (
@@ -147,7 +147,7 @@ def apply_filters(df: pd.DataFrame) -> pd.DataFrame:
         & mentions_ok
         & noise_ratio_ok
         & no_non_twitter_url
-        & is_twitter_url
+        & no_twitter_url
     )
 
     # Apply filter
@@ -211,8 +211,8 @@ def main():
     cleaned_data = load_and_clean_data(str(input_csv))
 
     # Split by years: train (2019-2021), test (2022-2023)
-    train_years = [2019, 2020, 2021]
-    test_years = [2022, 2023]
+    train_years = [2019, 2020]
+    test_years = [2021, 2022, 2023]
 
     train_data, test_data = split_train_test(cleaned_data, train_years, test_years)
 
