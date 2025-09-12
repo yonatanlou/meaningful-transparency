@@ -1,6 +1,8 @@
 import re
+
 import numpy as np
 import pandas as pd
+
 from constants import DATA_DIR
 
 # Text processing constants

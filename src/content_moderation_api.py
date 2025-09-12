@@ -2,11 +2,11 @@
 # For Google, you can use an API key for quick demos (?key=...), or OAuth service-account auth for prod.
 
 import os
-import requests
-from typing import Dict
-from dotenv import load_dotenv
 from collections import OrderedDict
+from typing import Dict
 
+import requests
+from dotenv import load_dotenv
 from googleapiclient import discovery
 from openai import OpenAI
 
