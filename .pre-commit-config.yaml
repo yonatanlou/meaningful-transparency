@@ -1,17 +1,17 @@
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.9
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.8.17
     hooks:
-      - id: ruff
+      - id: uv-lock
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.13.0
+    hooks:
+      - id: ruff-format
         args: [--fix]
         files: \.py$
-      - id: ruff-format
-        files: \.py$
-  - repo: local
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1
     hooks:
-      - id: run-sh-scripts
-        name: Run sh_scripts.sh
-        entry: src/sh_scripts.sh
-        language: system
-        always_run: true
-        pass_filenames: false
+      - id: isort
+        name: isort (python)
