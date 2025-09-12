@@ -117,13 +117,7 @@ def main():
         list(twitter_df.columns),
     )
 
-    # Clean the text data
-    twitter_df["Text"] = twitter_df["Text"].apply(
-        lambda x: re.sub(r"@\w+", "", str(x)) if pd.notna(x) else x
-    )
     twitter_df["Text"] = twitter_df["Text"].str.strip()
-
-    samples = twitter_df[twitter_df["Text"].notna()].copy()
     samples = pd.concat(
         [
             samples[samples["Biased"] == 0].sample(
@@ -145,14 +139,8 @@ def main():
         list(annotations.keys())[0],
     )
     logger.info("System prompt: %s", system_prompt)
-    user_prompt = (
-        all_annotations[one_def]
-        + "\n"
-        + "\n\ntext:\n"
-        + "<text>"
-        + "\n\nRespond with JSON only matching the schema."
-    )
-    logger.info("User prompt template: %s", user_prompt)
+    annotation_guidelines = all_annotations[one_def]
+    logger.info("User prompt template: %s", annotation_guidelines)
 
     logger.info("Starting to process %d samples", total_samples)
 
@@ -163,23 +151,17 @@ def main():
         keyword = (
             row["Keyword"] if "Keyword" in row and pd.notna(row["Keyword"]) else None
         )
-
+        user_prompt = annotation_guidelines.replace("{{text}}", text)
         logger.info(
-            "Sample %d/%d (Row %s): text=%s | keyword=%s",
+            "Sample %d/%d (Row %s): prompt[-200:]=%s | keyword=%s",
             sample_num,
             total_samples,
             idx,
-            truncate_text(text, 200),
+            user_prompt[-200:],
             keyword,
         )
 
-        user_prompt = (
-            all_annotations[one_def]
-            + "\n"
-            + "\n\ntext:\n"
-            + text
-            + "\n\nRespond with JSON only matching the schema."
-        )
+        
 
         try:
             resp = llm(
