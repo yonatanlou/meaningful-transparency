@@ -3,7 +3,6 @@
 A tool for classifying Twitter posts against different antisemitism definitions using LLMs.
 
 ## Quick Start
-
 1. **Install dependencies:**
    ```bash
    uv sync
