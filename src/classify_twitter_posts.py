@@ -1,28 +1,16 @@
-import re
-import pandas as pd
 import argparse
-from dotenv import load_dotenv
+import re
 from datetime import datetime
-from constants import (
-    DATA_DIR,
-    LOGS_DIR,
-    ANNOTATION_GLOB,
-    MODEL,
-    TEMPERATURE,
-    MAX_TOKENS,
-    CLASSIFIER_SYSTEM_ONE_DEF,
-    N_SAMPLES,
-    ANTISEMITISM_RATIO,
-)
 from pathlib import Path
-from utils import (
-    load_definitions,
-    setup_logger,
-    truncate_text,
-    extract_pred_and_desc,
-    get_answer,
-    llm,
-)
+
+import pandas as pd
+from dotenv import load_dotenv
+
+from constants import (ANNOTATION_GLOB, ANTISEMITISM_RATIO,
+                       CLASSIFIER_SYSTEM_ONE_DEF, DATA_DIR, LOGS_DIR,
+                       MAX_TOKENS, MODEL, N_SAMPLES, TEMPERATURE)
+from utils import (extract_pred_and_desc, get_answer, llm, load_definitions,
+                   setup_logger, truncate_text)
 
 
 def parse_args():
