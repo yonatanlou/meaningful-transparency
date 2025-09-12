@@ -1,17 +1,21 @@
+default_install_hook_types:
+  - pre-commit
+  - post-checkout
+  - post-merge
+  - post-rewrite
+
 repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
-    # uv version.
-    rev: 0.8.17
+    rev: 0.8.13
     hooks:
-      - id: uv-lock
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.9
+      - id: uv-sync
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.4.7  # Use the latest stable Ruff version
     hooks:
-      - id: ruff-format
-        args: [--, --fix]
-        files: \.py$
-  - repo: https://github.com/pycqa/isort
-    rev: 6.0.1
+      - id: ruff
+
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.13.2  # Use the latest stable isort version
     hooks:
       - id: isort
-        name: isort (python)
