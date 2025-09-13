@@ -61,7 +61,4 @@ Where:
   - Justify your classification decision
 
   
-## Reminders
-- Analyze the ENTIRE text within the `<text>` tags, not just keywords
-- Twitter posts may include hashtags, mentions, and abbreviations - consider these as part of the content
 """
