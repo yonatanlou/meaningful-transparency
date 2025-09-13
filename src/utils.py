@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 import requests
-
+import re
 from constants import OPENROUTER_BASE_URL, PROJECT_ROOT
 
 
@@ -83,18 +83,34 @@ def generate_prompt(text: str, annotations: Dict[str, str]) -> str:
     )
 
 
+
+
 def extract_pred_and_desc(
     json_text: str, allowed_keys: Dict[str, str]
 ) -> Tuple[str, str]:
     """Parse JSON and validate 'answer' against provided annotations keys."""
     try:
-        obj = json.loads(json_text)
+        # Clean the input text
+        cleaned_text = json_text.strip()
+        
+        # Check if the JSON is wrapped in markdown code blocks
+        if cleaned_text.startswith('```'):
+            # Extract content between triple backticks
+            # This regex handles both ```json and ``` cases
+            match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', cleaned_text, re.DOTALL)
+            if match:
+                cleaned_text = match.group(1).strip()
+        
+        # Try to parse the JSON
+        obj = json.loads(cleaned_text)
         answer = obj.get("answer", "")
         desc = obj.get("description", "")
-
+        
         if not desc:
             desc = "Model answer not in annotation keys; fell back to the first key."
+            
         return answer, desc
+        
     except Exception:
         # If the model did not return JSON, store the raw text for debugging
         return json_text, json_text
