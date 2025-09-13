@@ -13,6 +13,8 @@ MENTION_RE = re.compile(r"(^|\s)@\w+")
 HASHTAG_RE = re.compile(r"(^|\s)#\w+")
 SPACE_RE = re.compile(r"\s+")
 VIA_RE = re.compile(r"\bvia\b", flags=re.IGNORECASE)
+CONTROL_CHARS = r"[\u0000-\u001F\u007F-\u009F]"
+INVALID_POSTS = [1174297723895345152, 1174325309312651266]
 
 # Filtering parameters
 MIN_CLEAN_TEXT_LENGTH = 10
@@ -88,6 +90,17 @@ def url_via_flags(s: str) -> tuple[bool, bool]:
     else:
         return (False, True)
 
+def clean_text(df:pd.DataFrame, text_col: str = TEXT_COL) -> pd.DataFrame:
+    df_copy = df.copy()
+
+    df_copy["cleaned_text"] = (
+    df_copy[text_col]
+        .str.replace(r"&amp;?", "&", regex=True)   # handles &amp and &amp;
+        .str.replace("\uFFFD", "", regex=False)    # drop �
+        .str.replace(CONTROL_CHARS, "", regex=True)  # drop control chars
+    )
+    df_copy["cleaned_text"] = df_copy["cleaned_text"].str.strip()
+    return df_copy
 
 def add_filter_flags(df: pd.DataFrame, text_col: str = TEXT_COL) -> pd.DataFrame:
     """Add filtering flags to the dataframe."""
@@ -154,6 +167,7 @@ def apply_filters(df: pd.DataFrame) -> pd.DataFrame:
 
     # Apply filter
     filtered = df.loc[row_is_valid].copy()
+    filtered = filtered[~filtered["ID"].isin(INVALID_POSTS)]
 
     return filtered
 
@@ -174,6 +188,7 @@ def load_and_clean_data(csv_path: str) -> pd.DataFrame:
 
     # Apply filters
     filtered = apply_filters(df_flags)
+    filtered = clean_text(filtered, TEXT_COL)
 
     print(f"After filtering: {len(filtered)} rows ({len(df) - len(filtered)} removed)")
     print("Bias distribution after filtering:")

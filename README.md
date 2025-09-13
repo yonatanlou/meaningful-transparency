@@ -19,7 +19,7 @@ A tool for classifying Twitter posts against different antisemitism definitions 
    
    Or with custom parameters:
    ```bash
-   uv run python src/classify_twitter_posts.py --model anthropic/claude-sonnet-4 --temperature 0 --n-samples 750 --min-chars 50 --results_filename small_test/twitter_posts_classified_IHRA --dataset train
+   uv run python src/classify_twitter_posts.py --model anthropic/claude-sonnet-4 --temperature 0 --n-samples 3 --results_filename test_sampled_improved_prompt/twitter_posts_classified_IHRA_ISCAI --dataset train --definition IHRA-ISCAI
    ```
 
 ## What it does
@@ -39,7 +39,6 @@ You can configure the script via CLI arguments or by editing `src/constants.py`:
 - `--model`: LLM model to use (default: anthropic/claude-sonnet-4)
 - `--temperature`: Temperature for LLM (default: 0)
 - `--n-samples`: Number of posts to classify (default: 2)
-- `--min-chars`: Minimum text length (default: 100)
 - `--results_filename`: Base filename for results CSV (default: twitter_posts_classified)
 - `--one-def`: Definition to use - only "IHRA Definition" is supported (default: IHRA Definition)
 - `--dataset`: Dataset to use - train, test, or original (default: original)

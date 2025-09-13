@@ -7,7 +7,7 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from constants import (ANNOTATION_GLOB, ANTISEMITISM_RATIO,
-                       CLASSIFIER_SYSTEM_ONE_DEF, DATA_DIR, LOGS_DIR,
+                       CLASSIFIER_SYSTEM_ONE_DEF, DATA_DIR, IMPLEMENTED_DEFINITIONS, LOGS_DIR,
                        MAX_TOKENS, MODEL, N_SAMPLES, TEMPERATURE)
 from utils import (extract_pred_and_desc, get_answer, llm, load_definitions,
                    setup_logger, truncate_text)
@@ -40,11 +40,11 @@ def parse_args():
         help="Base filename for results CSV (default: twitter_posts_classified)",
     )
     parser.add_argument(
-        "--one-def",
+        "--definition",
         type=str,
-        choices=["IHRA Definition"],
-        default="IHRA Definition",
-        help="Use IHRA Definition for classification (only option available)",
+        choices=IMPLEMENTED_DEFINITIONS,
+        default="IHRA",
+        help="Use IHRA, IHRA-ISCAI, or JDA definition (default: IHRA)",
     )
     parser.add_argument(
         "--dataset",
@@ -65,7 +65,7 @@ def main():
     temperature = args.temperature
     n_samples = args.n_samples
     results_filename = args.results_filename
-    one_def = getattr(args, "one_def", None)
+    one_def = getattr(args, "definition", None)
     dataset = args.dataset
 
     # Setup logging
@@ -83,11 +83,8 @@ def main():
     all_annotations = load_definitions(str(ANNOTATION_GLOB))
 
     # Use only IHRA Definition
-    if one_def != "IHRA Definition":
-        logger.error(f"Only 'IHRA Definition' is supported, got: {one_def}")
-        raise ValueError("Only 'IHRA Definition' is supported")
-
-    if one_def not in all_annotations:
+    
+    if one_def not in IMPLEMENTED_DEFINITIONS:
         logger.error(
             f"Definition '{one_def}' not found in annotations. Available: {list(all_annotations.keys())}"
         )
@@ -117,19 +114,12 @@ def main():
         list(twitter_df.columns),
     )
 
-    # Clean the text data
-    twitter_df["Text"] = twitter_df["Text"].apply(
-        lambda x: re.sub(r"@\w+", "", str(x)) if pd.notna(x) else x
-    )
-    twitter_df["Text"] = twitter_df["Text"].str.strip()
-
-    samples = twitter_df[twitter_df["Text"].notna()].copy()
     samples = pd.concat(
         [
-            samples[samples["Biased"] == 0].sample(
+            twitter_df[twitter_df["Biased"] == 0].sample(
                 int(n_samples * (1 - ANTISEMITISM_RATIO)), random_state=42
             ),
-            samples[samples["Biased"] == 1].sample(
+            twitter_df[twitter_df["Biased"] == 1].sample(
                 int(n_samples * ANTISEMITISM_RATIO), random_state=42
             ),
         ]
@@ -145,41 +135,30 @@ def main():
         list(annotations.keys())[0],
     )
     logger.info("System prompt: %s", system_prompt)
-    user_prompt = (
-        all_annotations[one_def]
-        + "\n"
-        + "\n\ntext:\n"
-        + "<text>"
-        + "\n\nRespond with JSON only matching the schema."
-    )
-    logger.info("User prompt template: %s", user_prompt)
+    annotation_guidelines = all_annotations[one_def]
+    logger.info("User prompt template: %s", annotation_guidelines)
 
     logger.info("Starting to process %d samples", total_samples)
 
     for sample_num, (idx, row) in enumerate(samples.iterrows(), 1):
         # Extract fields
-        text = str(row["Text"])
+        text = str(row["cleaned_text"])
         biased = row["Biased"]
         keyword = (
             row["Keyword"] if "Keyword" in row and pd.notna(row["Keyword"]) else None
         )
-
+        assert "{{text}}" in annotation_guidelines, ("Prompt template must contain {{text}} placeholder")
+        user_prompt = annotation_guidelines.replace("{{text}}", text)
         logger.info(
-            "Sample %d/%d (Row %s): text=%s | keyword=%s",
+            "Sample %d/%d (Row %s): prompt[-200:]=%s | keyword=%s",
             sample_num,
             total_samples,
             idx,
-            truncate_text(text, 200),
+            user_prompt[-200:],
             keyword,
         )
 
-        user_prompt = (
-            all_annotations[one_def]
-            + "\n"
-            + "\n\ntext:\n"
-            + text
-            + "\n\nRespond with JSON only matching the schema."
-        )
+        
 
         try:
             resp = llm(
@@ -245,10 +224,11 @@ def main():
             "usage": resp.get("usage", {}),
         }
         logger.info(
-            "Sample %d/%d - Result: prediction=%s",
+            "Sample %d/%d - Result: prediction=%s, actual=%s",
             sample_num,
             total_samples,
             prediction,
+            biased,
         )
 
         results_rows.append(tmp_res)
