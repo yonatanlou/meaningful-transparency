@@ -117,7 +117,6 @@ def main():
         list(twitter_df.columns),
     )
 
-    twitter_df["Text"] = twitter_df["Text"].str.strip()
     samples = pd.concat(
         [
             samples[samples["Biased"] == 0].sample(
@@ -146,7 +145,7 @@ def main():
 
     for sample_num, (idx, row) in enumerate(samples.iterrows(), 1):
         # Extract fields
-        text = str(row["Text"])
+        text = str(row["cleaned_text"])
         biased = row["Biased"]
         keyword = (
             row["Keyword"] if "Keyword" in row and pd.notna(row["Keyword"]) else None
