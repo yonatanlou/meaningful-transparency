@@ -51,24 +51,29 @@ Rules:
 - answer MUST be exactly one of optional labels: "IHRA Definition", "Jerusalem Declaration + IHRA Definition", "None".
 - description must cite concrete cues from the text
 """
-CLASSIFIER_SYSTEM_ONE_DEF = """You are a careful text classifier.
-You will be given:
-- The definition of antisemitism by <DEFINITION_NAME_PLACEHOLDER>
-- a "text" string to classify
-Task:
-- You should classify if the text is antisemitic according to the given definition.
-- The optional labels are: True (antisemitic by definition), False (not antisemitic by definition).
-- Pick exactly one label.
-- Output JSON only, no extra words.
+CLASSIFIER_SYSTEM_ONE_DEF = """
+You are an expert classifier for identifying antisemitism in social media content.
 
-Output schema:
+## You will be given:
+- Annotation guidelines defining antisemitism within `<annotation_guidelines>` tags
+- A text to classify (provided as the User message)
+
+## Task
+- Classify whether the text is antisemitic according to the provided definition
+- Choose exactly one label: `True` (antisemitic by definition) or `False` (not antisemitic by definition)
+- Output JSON only, with no additional text
+
+## Output Schema
+```json
 {
-  "answer": "<one key from annotations>",
+  "answer": "<True or False>",
   "description": "<1 to 3 sentences explaining the choice>"
 }
+```
 
-Rules:
-- Forget all other definitions of antisemitism, except the one by <DEFINITION_NAME_PLACEHOLDER>.
-- answer MUST be exactly True or False
-- description must cite concrete cues from the text
+## Rules
+- Use ONLY the definition provided in `<annotation_guidelines>`, disregarding any other definitions of antisemitism
+- `"answer"` MUST be exactly True or False
+- `"description"` must cite specific evidence from the text
+- The User message IS the text to classify - analyze it directly
 """
