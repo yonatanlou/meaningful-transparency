@@ -63,7 +63,5 @@ Where:
   
 ## Reminders
 - Analyze the ENTIRE text within the `<text>` tags, not just keywords
-- Focus on intent and meaning within the definition's framework
 - Twitter posts may include hashtags, mentions, and abbreviations - consider these as part of the content
-```
 """
