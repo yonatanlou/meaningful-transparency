@@ -44,7 +44,7 @@ To guide IHRA in its work, the following examples may serve as illustrations:
 5. Antisemitic discrimination is the denial to Jews of opportunities or services available to others and is illegal in many countries.
 </guidelines>
 
-<interpretations>
+<notes>
 In order to apply the IHRA Working Definition of Antisemitism to the annotation of social media content, some parts require extrapolation. However, the approach taken stays within the original meaning of the definition and refrains from adding any new concepts. The guidelines include references, such as "classic antisemitism" and "stereotypical allegations about Jews." Such references have been made explicit by listing prominent stereotypes and images that are considered to be such stereotypes. The guidelines explicitly spell out what is believed to be implicit in the text. Any inferences should not be understood as changing the content of the definition.
 
 The definition notes that non-Jewish individuals can also become victims of antisemitism. We infer from guideline 4 that this is the case if they are perceived to be Jewish or linked to Jews. Additionally, we infer from guideline 2.2 that rhetoric can be antisemitic even if no specific Jewish individual or communal institution is targeted, but rather, the target is an abstract Jewish collective.
@@ -80,6 +80,6 @@ Manifestations of antisemitism related to Israel are described in the Working De
 Most symbols that have an antisemitic connotation are positive references to Nazism or to the Holocaust, such as the swastika or other Nazi or Nazi-predecessor flags, the Hitler salute, emblems of Nazi organizations such as the SS, Nazi slogans such as "Blut und Ehre" (blood and honor), or numbers representing "Heil Hitler" (88), "Adolf Hitler" (18). Positive references to the Holocaust used to manifest endorsement for the killing of Jews include symbols representing Zyklon B gas, including hissing noises, or references to ovens that were used to burn the people who were gassed (including pictures taken from these ovens).
 
 The ADL Hate Symbols Database provides an extensive list of symbols used by hate groups, mostly white supremacists and Neo-Nazis. This list helps us to contextualize tweets. We consider all symbols with positive references to Nazism antisemitic because they implicitly endorse the murder of Jews. Symbols by extremist Christian and Muslim groups are not as extensively documented. Some Jihadist groups, such as Hamas or Houthi, are known for their antisemitism and lethally targeting victims as Jews. Endorsing the aforementioned groups is treated as a context suggesting antisemitism, but is annotated as antisemitic only when there are other references in the tweets to Jews, Judaism, or Israel that make an antisemitic reading of it likely.
-</interpretations>
+</notes>
 
 </annotation_guidelines>
