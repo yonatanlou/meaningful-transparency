@@ -18,7 +18,7 @@ OUT_CSV = PROJECT_ROOT / "twitter_posts_classified.csv"
 # API configuration
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 MODEL = "anthropic/claude-sonnet-4"
-
+IMPLEMENTED_DEFINITIONS = ["IHRA", "IHRA-ISCAI", "JDA"]
 # LLM parameters
 TEMPERATURE = 0
 MAX_TOKENS = 800
