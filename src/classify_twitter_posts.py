@@ -224,10 +224,11 @@ def main():
             "usage": resp.get("usage", {}),
         }
         logger.info(
-            "Sample %d/%d - Result: prediction=%s",
+            "Sample %d/%d - Result: prediction=%s, actual=%s",
             sample_num,
             total_samples,
             prediction,
+            biased,
         )
 
         results_rows.append(tmp_res)
