@@ -14,7 +14,7 @@ HASHTAG_RE = re.compile(r"(^|\s)#\w+")
 SPACE_RE = re.compile(r"\s+")
 VIA_RE = re.compile(r"\bvia\b", flags=re.IGNORECASE)
 CONTROL_CHARS = r"[\u0000-\u001F\u007F-\u009F]"
-
+INVALID_POSTS = [1174297723895345152, 1174325309312651266]
 
 # Filtering parameters
 MIN_CLEAN_TEXT_LENGTH = 10
@@ -167,6 +167,7 @@ def apply_filters(df: pd.DataFrame) -> pd.DataFrame:
 
     # Apply filter
     filtered = df.loc[row_is_valid].copy()
+    filtered = filtered[~filtered["ID"].isin(INVALID_POSTS)]
 
     return filtered
 
